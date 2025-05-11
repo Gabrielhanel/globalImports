@@ -40,14 +40,16 @@ export default function HomeScreen() {
       <FlatList
         data={products}
         keyExtractor={(item) => item.id?.toString() || item.name}
+        contentContainerStyle= {{paddingBottom: 80}}
         renderItem={({ item }) => (
           <TouchableOpacity>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={styles.card}>
               <View>
-                <Text style={styles.item}>{item.brand?.toUpperCase()}</Text>
-                <Text style={styles.item}>{item.title}</Text>
-                <Text style={styles.item}>Ano: 2020</Text>
-                <Text style={styles.item}>R$ {item.price}</Text>
+                <Text style={[styles.item, { fontWeight: 'bold' }]}>{item.brand?.toUpperCase()}</Text>
+                <Text style={[styles.item, { color: '#555' }]}>{item.title}</Text>
+                <Text style={[styles.item, { fontSize: 14, color: '#aaa' }]}>2020</Text>
+                <Text style={[styles.item, {fontSize: 18, marginTop: 8,color: '#009999', fontWeight: 'bold',
+                }]}>R$ {item.price}</Text>
               </View>
               <View>
                 <Image
@@ -75,10 +77,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
     fontFamily: "K2D_700Bold",
+    maxWidth: 200
   },
   thumbnail: {
     width: 100,
     height: 100,
     marginBottom: 10,
   },
+  card: {
+    width: 330,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 5,
+    margin: 10,
+    justifyContent: 'space-between',
+    // Sombras no iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 6,
+  }
 });
