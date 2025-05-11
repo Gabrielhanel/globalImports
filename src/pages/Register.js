@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, Alert, Platform } from 'react-native';
+import {Calendar} from 'react-native-calendars';
 // import calendar
 
 
@@ -66,7 +67,7 @@ export default function Register({ navigation }) {
   const [cpfCnpj, setCpfCnpj] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
-  
+  const [selectedDate, setSelectedDate] = useState('');
 
   const enviarDados = () => {
     const documento = cpfCnpj.replace(/[^\d]+/g, '');
@@ -103,7 +104,8 @@ export default function Register({ navigation }) {
       `Gênero: ${gender}\n` +
       `Telefone: ${phone}\n` +
       `CPF/CNPJ: ${cpfCnpj}\n` +
-      `Senha: ${password}\n`
+      `Senha: ${password}\n` +
+      `Data de nascimento: ${selectedDate}\n` 
     );
   };
 
@@ -120,6 +122,44 @@ export default function Register({ navigation }) {
 
           <Text style={styles.textoNome}>Sobrenome:</Text>
           <TextInput style={styles.input} placeholder="Digite seu sobrenome" onChangeText={setLastName} />
+
+                  <Calendar
+          style={{
+            backgroundColor: '#F2F2F2',
+            borderRadius: 10,
+            marginBottom: 25
+          }}
+          theme={{
+            calendarBackground: 'transparent',
+            textSectionTitleColor: '#000',
+            selectedDayBackgroundColor: '#00adf5',
+            selectedDayTextColor: '#ffffff',
+            todayTextColor: '#00adf5',
+            dayTextColor: '#2d4150',
+            textDisabledColor: '#d9e1e8',
+            dotColor: '#00adf5',
+            selectedDotColor: '#ffffff',
+            arrowColor: '#00adf5',
+            monthTextColor: '#000',
+            indicatorColor: '#000',
+            textDayFontFamily: 'System',
+            textMonthFontFamily: 'System',
+            textDayHeaderFontFamily: 'System',
+            textDayFontWeight: '400',
+            textMonthFontWeight: 'bold',
+            textDayHeaderFontWeight: '400',
+            textDayFontSize: 16,
+            textMonthFontSize: 16,
+            textDayHeaderFontSize: 14
+          }}
+        onDayPress={(day) => {
+          setSelectedDate(day.dateString); // exemplo: '2025-05-06'
+        }}
+        markedDates={{
+          [selectedDate]: { selected: true, marked: true, selectedColor: '#00adf5' },
+        }}
+
+        />
 
           <Text style={styles.textoNome}>E-mail:</Text>
           <TextInput style={styles.input} placeholder="Digite seu e-mail" onChangeText={setEmail} keyboardType="email-address" />
