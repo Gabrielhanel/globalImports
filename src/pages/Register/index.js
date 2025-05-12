@@ -112,7 +112,7 @@ export default function Register({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image source={require('./../media/logo.png')} style={{ width: 100, height: 80, marginTop: 35 }} />
+        <Image source={require('../../media/logo.png')} style={{ width: 100, height: 80, marginTop: 35 }} />
 
         <Text style={styles.slogan}> Informe-nos seus dados </Text>
 

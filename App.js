@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./src/pages/HomeScreen";
+import HomeScreen from "./src/pages/Home";
 import { StyleSheet, View, Image, SafeAreaView, Platform } from "react-native";
 import Login from "./src/pages/Login";
 import { useFonts, K2D_100Thin, K2D_700Bold } from "@expo-google-fonts/k2d";
 import Register from "./src/pages/Register";
 import { StatusBar } from "expo-status-bar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import SearchScreen from "./src/pages/SearchScreen";
-import Cart from "./src/pages/Cart";
+import SearchScreen from "./src/pages/Search";
+import Cart from "./src/pages/ShoppingCart";
 import Favorite from "./src/pages/Favorite";
-import User from "./src/pages/User";
+import User from "./src/pages/Profile";
+import Product from "./src/pages/Home/Product";
 
 // Criando a navegação
 const Stack = createStackNavigator();
@@ -145,6 +146,11 @@ export default function App() {
             <Stack.Screen
               name="Login"
               component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Product"
+              component={Product}
               options={{ headerShown: false }}
             />
             <Stack.Screen

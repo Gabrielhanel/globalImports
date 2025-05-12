@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={require("./../media/logo.png")}
+        source={require("../../media/logo.png")}
         style={{ width: 200, height: 160, marginBottom: 30 }}
       />
       <View style={styles.areaFormulario}>
