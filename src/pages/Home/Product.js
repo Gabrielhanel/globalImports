@@ -52,7 +52,7 @@ export default function Home({ route }) {
         )}
       />
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text>{product.brand.toUpperCase()}</Text>
+        <Text>{product.brand}</Text>
         <Text>{product.title}</Text>
       </View>
       <View>
