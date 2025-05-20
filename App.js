@@ -13,6 +13,7 @@ import Cart from "./src/pages/ShoppingCart";
 import Favorite from "./src/pages/Favorite";
 import User from "./src/pages/Profile";
 import Product from "./src/pages/Home/Product";
+import EditProfile from "./src/pages/Profile/EditProfile";
 
 // Criando a navegação
 const Stack = createStackNavigator();
@@ -166,6 +167,11 @@ export default function App() {
             <Stack.Screen
               name="MainTabs"
               component={TabRoutes}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

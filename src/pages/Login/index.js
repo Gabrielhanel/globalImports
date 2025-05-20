@@ -63,7 +63,7 @@ export default function Login({ navigation }) {
           style={styles.botao}
           onPress={() => {
             if (enviarDados()) {
-              navigation.navigate("MainTabs");
+              navigation.navigate("MainTabs", {user: name});
             }
           }}
           underlayColor="#000000"

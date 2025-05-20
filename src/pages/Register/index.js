@@ -123,6 +123,7 @@ export default function Register({ navigation }) {
           <Text style={styles.textoNome}>Sobrenome:</Text>
           <TextInput style={styles.input} placeholder="Digite seu sobrenome" onChangeText={setLastName} />
 
+          <Text style={styles.textoNome}>Data de nascimento:</Text>
                   <Calendar
           style={{
             backgroundColor: '#F2F2F2',
