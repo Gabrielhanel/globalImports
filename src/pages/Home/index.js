@@ -19,7 +19,6 @@ export default function HomeScreen() {
     const fetchData = async () => {
       try {
         const response = await api.get("/products");
-        //console.log('Dados recebidos:', response.data);
         setProducts(response.data.products);
       } catch (error) {
         console.error("Erro ao buscar os produtos:", error);
