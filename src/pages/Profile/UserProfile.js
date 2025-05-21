@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import ButtonEditProfile from "../../components/ButtonEditProfile";
 
 export default function UserProfile() {
   return (
@@ -12,15 +13,7 @@ export default function UserProfile() {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Usuário</Text>
-          <TouchableOpacity style={styles.btn}>
-            <View style={{ flexDirection: "row" }}>
-              <Image
-                source={require("../../media/profile/pen.png")}
-                style={{ marginTop: 5, marginRight: 10 }}
-              />
-              <Text style={styles.textBtn}>Editar perfil</Text>
-            </View>
-          </TouchableOpacity>
+          <ButtonEditProfile/>
         </View>
       </View>
       <View>

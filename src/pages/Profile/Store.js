@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import { useNavigation } from '@react-navigation/native';
-
+import ButtonEditProfile from "../../components/ButtonEditProfile";
 export default function UserProfile() {
 
   const navigation = useNavigation();
@@ -16,15 +16,7 @@ export default function UserProfile() {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Anunciante</Text>
-          <TouchableOpacity style={styles.btn}>
-            <View style={{ flexDirection: "row" }}>
-              <Image
-                source={require("../../media/profile/pen.png")}
-                style={{ marginTop: 5, marginRight: 10 }}
-              />
-              <Text style={styles.textBtn} onPress={() => navigation.navigate("EditProfile")}>Editar perfil</Text>
-            </View>
-          </TouchableOpacity>
+          <ButtonEditProfile/>
         </View>
       </View>
       <View>

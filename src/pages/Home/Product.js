@@ -57,7 +57,7 @@ export default function Home({ route }) {
           )}
         />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={styles.brand}>{product.brand.toUpperCase()}</Text>
+          <Text style={styles.brand}>{product.brand?.toUpperCase()}</Text>
           <Text style={styles.title}>{product.title}</Text>
         </View>
         <View style={{ justifyContent: "flex-start", alignItems: "center" }}>
