@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,21 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 
 export default function Login({ navigation }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
+const isValidEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+};
+
   const enviarDados = () => {
-    if (name === "" || password === "") {
+    if (name === "" || password === "" || isValidEmail) {
       alert("Preencha todos os nomes corretamente!");
       return false;
     }
@@ -31,6 +38,10 @@ export default function Login({ navigation }) {
   };
 
   return (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1, marginTop: -50 }}
+        >
     <View style={styles.container}>
       <Image
         source={require("../../media/logo.png")}
@@ -72,6 +83,7 @@ export default function Login({ navigation }) {
         </TouchableOpacity>
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 }
 
