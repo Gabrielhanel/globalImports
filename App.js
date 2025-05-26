@@ -14,6 +14,7 @@ import Favorite from "./src/pages/Favorite";
 import User from "./src/pages/Profile";
 import Product from "./src/pages/Home/Product";
 import EditProfile from "./src/pages/Profile/EditProfile";
+import CardProductProvider from "./src/contexts/cardProduct";
 
 // Criando a navegação
 const Stack = createStackNavigator();
@@ -60,6 +61,7 @@ export default function App() {
   }
   function TabRoutes() {
     return (
+      <CardProductProvider>
       <Tab.Navigator
       initialRouteName="Home"
         screenOptions={{
@@ -129,6 +131,7 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
+      </CardProductProvider>
     );
   }
   // Quando o carregamento e as fontes estiverem prontos, renderiza a navegação
@@ -142,8 +145,9 @@ export default function App() {
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
       >
+        <CardProductProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator initialRouteName="MainTabs">
             <Stack.Screen
               name="Login"
               component={Login}
@@ -155,18 +159,13 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="Home"
-              component={HomeScreen}
+              name="MainTabs"
+              component={TabRoutes}
               options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Register"
               component={Register}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="MainTabs"
-              component={TabRoutes}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -176,6 +175,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
+        </CardProductProvider>
       </SafeAreaView>
     </>
   );

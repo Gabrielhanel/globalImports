@@ -1,39 +1,78 @@
-import { View, TextInput, Text, Image, TouchableOpacity, FlatList, StyleSheet  } from 'react-native';
-import api from '../../services/Api';
-import { useEffect, useState } from 'react';
+import { View, TextInput, Text, ScrollView, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import GoBack from '../../components/goBack';
 
-export default function EditProfile( ) {
-  const [users, setUsers] = useState([]);
-  const [email, setEmail] = useState('');
+export default function EditProfile() {
+  const [users] = useState({
+    name: "fulano",
+    email: "sla@email.com",
+    phone: "99999999999",
+    cpf: "000.000.000-00"
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get("/users");
-        //console.log('Dados recebidos:', response.data);
-        setUsers(response.data.users);
-      } catch (error) {
-        console.error("Erro ao buscar os produtos:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const [email, setEmail] = useState(users.email);
+  const [name, setName] = useState(users.name);
+  const [phone, setPhone] = useState(users.phone);
+  const [cpf, setCpf] = useState(users.cpf);
 
- return (
-   <View>
-    <Text>Alterar foto de perfil:</Text>
-    <FlatList
-    data={users}
-     keyExtractor={(item) => item.id}
-     renderItem={({ item }) => (
-       <TextInput
-       onChangeText={(text) => setEmail(text)}
-       value={item.email}
-       placeholder={item.email}
-       />
-     )}
-    />
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+        <GoBack />
+      </View>
+      <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10 }}>Editar Perfil</Text>
+      <Text style={styles.label}>Alterar foto de perfil:</Text>
 
-   </View>
+      <Text style={styles.label}>Alterar email:</Text>
+      <TextInput
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Digite seu email"
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Alterar nome completo:</Text>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="Digite seu nome completo"
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Alterar CPF:</Text>
+      <TextInput
+        value={cpf}
+        onChangeText={setCpf}
+        placeholder="Digite seu CPF"
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Alterar telefone:</Text>
+      <TextInput
+        value={phone}
+        onChangeText={setPhone}
+        placeholder="Digite seu telefone"
+        style={styles.input}
+      />
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 5,
+  },
+});

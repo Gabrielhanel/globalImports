@@ -20,7 +20,7 @@ const isValidEmail = (email) => {
 };
 
   const enviarDados = () => {
-    if (name === "" || password === "" || isValidEmail) {
+    if (name === "" || password === "" || !isValidEmail) {
       alert("Preencha todos os nomes corretamente!");
       return false;
     }

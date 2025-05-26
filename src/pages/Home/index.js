@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,23 +10,11 @@ import {
 import api from "../../services/Api";
 import QuickFilter from "./quickFilter";
 import { useNavigation } from "@react-navigation/native";
+import { CardProductContext } from "../../contexts/cardProduct";
 
 export default function HomeScreen() {
-  const [products, setProducts] = useState([]);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get("/products");
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error("Erro ao buscar os produtos:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { products } = useContext(CardProductContext);
 
   return (
     <View style={styles.container}>
@@ -40,32 +28,62 @@ export default function HomeScreen() {
         }}
       />
       <QuickFilter/>
-      <FlatList
-        data={products}
-        keyExtractor={(item) => item.id?.toString() || item.name}
-        contentContainerStyle= {{paddingBottom: 80}}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate("Product", { product: item, images: item.images })}>
-            <View style={styles.card}>
-              <View>
-                <Text style={[styles.item, { fontWeight: 'bold' }]}>{item.brand?.toUpperCase()}</Text>
-                <Text style={[styles.item, { color: '#555', fontFamily: 'K2D_400Regular' }]}>{item.title}</Text>
-                <Text style={[styles.item, { fontSize: 14, color: '#aaa' }]}>2020</Text>
-                <Text style={[styles.item, {fontSize: 18, marginTop: 8,color: '#009999', fontWeight: 'bold',
-                }]}>R$ {item.price}</Text>
-              </View>
-              <View>
-                <Image
-                  source={{ uri: item.thumbnail }}
-                  style={styles.thumbnail}
-                  resizeMode="contain"
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+
+<FlatList
+  data={products}
+  keyExtractor={(item) => item.id?.toString() || item.name}
+  contentContainerStyle={{ paddingBottom: 80 }}
+  showsVerticalScrollIndicator={false}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Product", {
+          product: item,
+          images: item.images,
+        })
+      }
+    >
+      <View style={styles.card}>
+        <View>
+          <Text style={[styles.item, { fontWeight: "bold" }]}>
+            {item.brand?.toUpperCase()}
+          </Text>
+          <Text
+            style={[
+              styles.item,
+              { color: "#555", fontFamily: "K2D_400Regular" },
+            ]}
+          >
+            {item.title}
+          </Text>
+          <Text style={[styles.item, { fontSize: 14, color: "#aaa" }]}>
+            {item.year || "2020"} {/* se tiver um campo de ano */}
+          </Text>
+          <Text
+            style={[
+              styles.item,
+              {
+                fontSize: 18,
+                marginTop: 8,
+                color: "#009999",
+                fontWeight: "bold",
+              },
+            ]}
+          >
+            R$ {item.price}
+          </Text>
+        </View>
+        <View>
+          <Image
+            source={{ uri: item.thumbnail }}
+            style={styles.thumbnail}
+            resizeMode="contain"
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+  )}
+/>
     </View>
   );
 }

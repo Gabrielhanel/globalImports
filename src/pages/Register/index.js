@@ -105,7 +105,7 @@ export default function Register({ navigation }) {
       return;
     }
 
-    if (!firstName || !lastName || !email | !gender || !phone || !cpfCnpj || !password || isValidEmail ) {
+    if (!firstName || !lastName || !email | !gender || !phone || !cpfCnpj || !password || !isValidEmail ) {
       Alert.alert('Preencha todos os campos corretamente!');
       return;
     }
