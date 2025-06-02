@@ -13,7 +13,7 @@ export default function ButtonEditProfile() {
                         source={require("../media/profile/pen.png")}
                         style={{ marginTop: 5, marginRight: 10 }}
                     />
-                    <Text style={styles.textBtn} onPress={() => navigation.navigate("EditProfile")}>Editar perfil</Text>
+                    <Text style={styles.textBtn}>Editar perfil</Text>
                 </View>
             </TouchableOpacity>
         </View>

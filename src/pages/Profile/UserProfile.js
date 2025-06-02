@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import ButtonEditProfile from "../../components/ButtonEditProfile";
-
+import ButtonAddress from "../../components/ButtonAddress";
 export default function UserProfile() {
   return (
     <View style={styles.container}>
@@ -16,21 +16,12 @@ export default function UserProfile() {
           <ButtonEditProfile/>
         </View>
       </View>
-      <View>
-        <TouchableOpacity>
-          <View style={[styles.card, { flexDirection: "row", marginTop: 50 }]}>
-            <Image
-              source={require("../../media/profile/pin.png")}
-              style={{ marginTop: 5, marginRight: 10 }}
-            />
-            <Text style={styles.textCard}>Meu Endereço</Text>
-          </View>
-        </TouchableOpacity>
+      <ButtonAddress/>
         <TouchableOpacity>
           <View style={[styles.card, { flexDirection: "row" }]}>
             <Image
-            source={require("../../media/profile/shopping-cart.png")}
-            style={{ marginTop: 5, marginRight: 10 }}
+            source={require("../../media/profile/car.png")}
+            style={{marginRight: 10 }}
             />
             <Text style={styles.textCard}>Meus Pedidos</Text>
           </View>
@@ -47,10 +38,9 @@ export default function UserProfile() {
         </TouchableOpacity>
       </View>
       </View>
-    </View>
   );
 }
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100, // isso move tudo pra baixo

@@ -135,7 +135,7 @@ export default function Home({ route }) {
     <Text style={styles.specValue}>Híbrida</Text>
   </View>
 
-  <View>
+  <View style={{paddingBottom: 50}}>
     <Text style={styles.specTitle}>Portas</Text>
     <Text style={styles.specValue}>2</Text>
 

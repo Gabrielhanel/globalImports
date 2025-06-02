@@ -15,6 +15,8 @@ import User from "./src/pages/Profile";
 import Product from "./src/pages/Home/Product";
 import EditProfile from "./src/pages/Profile/EditProfile";
 import CardProductProvider from "./src/contexts/cardProduct";
+import Address from "./src/pages/Profile/Address";
+import Filter from "./src/pages/Search/Filter";
 
 // Criando a navegação
 const Stack = createStackNavigator();
@@ -75,7 +77,7 @@ export default function App() {
             backgroundColor: "#fff",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            height: 70,
+            height: 90,
             paddingTop: 10,
             elevation: 10, // Android: sombra
             shadowColor: "#000", // iOS: sombra
@@ -172,6 +174,16 @@ export default function App() {
               name="EditProfile"
               component={EditProfile}
               options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Address"
+              component={Address}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+            name="Filter" 
+            component={Filter} 
+            options={{ headerShown: false }}
             />
           </Stack.Navigator>
         </NavigationContainer>

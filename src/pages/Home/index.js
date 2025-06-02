@@ -7,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import api from "../../services/Api";
 import QuickFilter from "./quickFilter";
 import { useNavigation } from "@react-navigation/native";
 import { CardProductContext } from "../../contexts/cardProduct";
@@ -57,7 +56,7 @@ export default function HomeScreen() {
             {item.title}
           </Text>
           <Text style={[styles.item, { fontSize: 14, color: "#aaa" }]}>
-            {item.year || "2020"} {/* se tiver um campo de ano */}
+            {item.year || "2020"}
           </Text>
           <Text
             style={[

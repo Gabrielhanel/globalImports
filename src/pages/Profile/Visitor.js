@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Visitor() {
-  const natigation = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -18,7 +18,7 @@ export default function Visitor() {
         </View>
       </View>
       <View style={{alignItems: "center", justifyContent: "center", marginTop: 60}}>
-        <TouchableOpacity style={styles.btn} onPress={() => natigation.navigate("Login")}>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Login")}>
           <View style={{flexDirection: "row"}}>
             <Image 
             source={require("../../media/profile/login.png")}
@@ -28,7 +28,7 @@ export default function Visitor() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn} onPress={() => natigation.navigate("Register")}>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("Register")}>
           <View style={{flexDirection: "row"}}>
             <Image 
             source={require("../../media/profile/create-acount.png")}
