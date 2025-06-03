@@ -3,10 +3,9 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView,
 import { Calendar } from 'react-native-calendars';
 // import calendar
 
-
 //bugs para correção:
 // 1. A data de nascimento precisa ser validada para não permitir datas futuras, 
-// 2. Validação do email não está implementada.
+// questão do cadastro da imagem da foto de perfil, verificar se sera obrigatório ou não
 
 // Funções de validação
 const isValidEmail = (email) => {
@@ -105,7 +104,7 @@ export default function Register({ navigation }) {
       return;
     }
 
-    if (!firstName || !lastName || !email | !gender || !phone || !cpfCnpj || !password || !isValidEmail ) {
+    if (!firstName || !lastName || !email | !gender || !phone || !cpfCnpj || !password || !isValidEmail) {
       Alert.alert('Preencha todos os campos corretamente!');
       return;
     }
