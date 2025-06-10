@@ -18,6 +18,7 @@ import CardProductProvider from "./src/contexts/cardProduct";
 import Address from "./src/pages/Profile/Address";
 import Filter from "./src/pages/Search/Filter";
 import { FavoritesProvider } from "./src/contexts/favoriteContext";
+import CartProvider from "./src/contexts/CartContext"
 // Criando a navegação
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -147,6 +148,7 @@ export default function App() {
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
       >
+        <CartProvider>
         <FavoritesProvider>
         <CardProductProvider>
         <NavigationContainer>
@@ -190,6 +192,7 @@ export default function App() {
         </NavigationContainer>
         </CardProductProvider>
                 </FavoritesProvider>
+                </CartProvider>
       </SafeAreaView>
     </>
   );

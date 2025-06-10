@@ -10,8 +10,16 @@ import {
 } from "react-native";
 import GoBack from "../../components/goBack";
 import ButtonLike from "../../components/ButtonLike";
+import { useContext } from "react";
+import { CartContext } from "../../contexts/CartContext";
 
 export default function Home({ route }) {
+  const { cart, addProduct } = useContext(CartContext);
+
+  function handleAddProduct(product) {
+    addProduct(product);
+  }
+
   const { product, images } = route.params;
   return (
     <ScrollView>
@@ -27,14 +35,14 @@ export default function Home({ route }) {
               style={{ width: 30, height: 30, marginRight: 55 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cart}>
+          <TouchableOpacity style={styles.cart} onPress={() => handleAddProduct(product)} >
             <Text style={styles.textCondition}>Adicionar ao carrinho</Text>
             <Image
               source={require("../../media/home/shopping_cart.png")}
               style={{ width: 30, height: 30, marginRight: 55 }}
             />
           </TouchableOpacity>
-          <ButtonLike  product={product} />
+          <ButtonLike product={product} />
         </View>
         <FlatList
           data={images}
@@ -102,49 +110,55 @@ export default function Home({ route }) {
           </View>
         </View>
         <Text style={styles.fichatitle}>Ficha Técnica:</Text>
-<View style={{ flexDirection: "row", justifyContent: "space-around", padding: 10 }}>
-  <View>
-    <Text style={styles.specTitle}>Marca</Text>
-    <Text style={styles.specValue}>Ferrari</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            padding: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.specTitle}>Marca</Text>
+            <Text style={styles.specValue}>Ferrari</Text>
 
-    <Text style={styles.specTitle}>Modelo</Text>
-    <Text style={styles.specValue}>LaFerrari</Text>
+            <Text style={styles.specTitle}>Modelo</Text>
+            <Text style={styles.specValue}>LaFerrari</Text>
 
-    <Text style={styles.specTitle}>Ano</Text>
-    <Text style={styles.specValue}>2015</Text>
+            <Text style={styles.specTitle}>Ano</Text>
+            <Text style={styles.specValue}>2015</Text>
 
-    <Text style={styles.specTitle}>Motorização</Text>
-    <Text style={styles.specValue}>V12 6.3L</Text>
-  </View>
+            <Text style={styles.specTitle}>Motorização</Text>
+            <Text style={styles.specValue}>V12 6.3L</Text>
+          </View>
 
-  <View>
-    <Text style={styles.specTitle}>Potência</Text>
-    <Text style={styles.specValue}>963cv</Text>
+          <View>
+            <Text style={styles.specTitle}>Potência</Text>
+            <Text style={styles.specValue}>963cv</Text>
 
-    <Text style={styles.specTitle}>Torque</Text>
-    <Text style={styles.specValue}>71,4kg/fm</Text>
+            <Text style={styles.specTitle}>Torque</Text>
+            <Text style={styles.specValue}>71,4kg/fm</Text>
 
-    <Text style={styles.specTitle}>Tração</Text>
-    <Text style={styles.specValue}>Traseira</Text>
+            <Text style={styles.specTitle}>Tração</Text>
+            <Text style={styles.specValue}>Traseira</Text>
 
-    <Text style={styles.specTitle}>Propulsão</Text>
-    <Text style={styles.specValue}>Híbrida</Text>
-  </View>
+            <Text style={styles.specTitle}>Propulsão</Text>
+            <Text style={styles.specValue}>Híbrida</Text>
+          </View>
 
-  <View style={{paddingBottom: 50}}>
-    <Text style={styles.specTitle}>Portas</Text>
-    <Text style={styles.specValue}>2</Text>
+          <View style={{ paddingBottom: 50 }}>
+            <Text style={styles.specTitle}>Portas</Text>
+            <Text style={styles.specValue}>2</Text>
 
-    <Text style={styles.specTitle}>Configuração</Text>
-    <Text style={styles.specValue}>Coupé</Text>
+            <Text style={styles.specTitle}>Configuração</Text>
+            <Text style={styles.specValue}>Coupé</Text>
 
-    <Text style={styles.specTitle}>Câmbio</Text>
-    <Text style={styles.specValue}>Automático</Text>
+            <Text style={styles.specTitle}>Câmbio</Text>
+            <Text style={styles.specValue}>Automático</Text>
 
-    <Text style={styles.specTitle}>0–100km/h</Text>
-    <Text style={styles.specValue}>2,5s</Text>
-  </View>
-</View>
+            <Text style={styles.specTitle}>0–100km/h</Text>
+            <Text style={styles.specValue}>2,5s</Text>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
