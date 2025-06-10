@@ -2,12 +2,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import { CardProductContext } from "../../contexts/cardProduct";
 export default function OrderBy() {
-      const { products } = useContext(CardProductContext);
+  const { products } = useContext(CardProductContext);
   return (
     <View>
       <View style={styles.box}>
         <TouchableOpacity>
-          <Text style={[styles.text, {marginTop: 12}]}>Todos</Text>
+          <Text style={[styles.text, { marginTop: 12 }]}>Todos</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles.text}>Marca</Text>
         </TouchableOpacity>
         <TouchableOpacity>
           <Text style={styles.text}>Esportivo</Text>
@@ -30,18 +33,18 @@ export default function OrderBy() {
 }
 
 const styles = StyleSheet.create({
-    box: {
-        backgroundColor: "#FAFAFA",
-        borderRadius: 10,
-        width: "300",
-        height: "300"
-    },
-    text: {
-        fontSize: 18,
-        color: "#696969",
-        textAlign: "left",
-        marginLeft: 15,
-        padding: 10,
-        fontFamily: "K2D_400Regular",
-    }
+  box: {
+    backgroundColor: "#FAFAFA",
+    borderRadius: 10,
+    width: "300",
+    height: "300"
+  },
+  text: {
+    fontSize: 18,
+    color: "#696969",
+    textAlign: "left",
+    marginLeft: 15,
+    padding: 10,
+    fontFamily: "K2D_400Regular",
+  }
 });

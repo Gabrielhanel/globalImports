@@ -17,7 +17,7 @@ import EditProfile from "./src/pages/Profile/EditProfile";
 import CardProductProvider from "./src/contexts/cardProduct";
 import Address from "./src/pages/Profile/Address";
 import Filter from "./src/pages/Search/Filter";
-
+import { FavoritesProvider } from "./src/contexts/favoriteContext";
 // Criando a navegação
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -147,6 +147,7 @@ export default function App() {
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
       >
+        <FavoritesProvider>
         <CardProductProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="MainTabs">
@@ -188,6 +189,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
         </CardProductProvider>
+                </FavoritesProvider>
       </SafeAreaView>
     </>
   );

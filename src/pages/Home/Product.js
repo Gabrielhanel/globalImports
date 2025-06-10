@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import GoBack from "../../components/goBack";
+import ButtonLike from "../../components/ButtonLike";
 
 export default function Home({ route }) {
   const { product, images } = route.params;
@@ -33,12 +34,7 @@ export default function Home({ route }) {
               style={{ width: 30, height: 30, marginRight: 55 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.favorite}>
-            <Image
-              source={require("../../media/home/favorite.png")}
-              style={{ width: 30, height: 30 }}
-            />
-          </TouchableOpacity>
+          <ButtonLike  product={product} />
         </View>
         <FlatList
           data={images}
@@ -187,16 +183,6 @@ const styles = StyleSheet.create({
     width: 150,
     height: 50,
     margin: 10,
-  },
-  favorite: {
-    width: 45,
-    height: 45,
-    marginTop: 55,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 30,
-    backgroundColor: "#ea1d25",
-    borderRadius: 15,
   },
   brand: {
     fontSize: 24,

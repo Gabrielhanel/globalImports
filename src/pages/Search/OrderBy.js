@@ -32,9 +32,6 @@ export default function OrderBy() {
     <View>
       <View style={styles.box}>
         <TouchableOpacity>
-          <Text style={[styles.text, {marginTop: 12}]}>Recomendados</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
           <Text style={styles.text}>Nome (A-Z)</Text>
         </TouchableOpacity>
         <TouchableOpacity>
@@ -46,15 +43,6 @@ export default function OrderBy() {
         <TouchableOpacity>
           <Text style={styles.text}>Preço (menor)</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.text}>Exclusividade Mundial</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.text}>Exclusividade Nacional</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.text}>Marca</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -62,10 +50,12 @@ export default function OrderBy() {
 
 const styles = StyleSheet.create({
     box: {
+      marginTop: 20,
         backgroundColor: "#FAFAFA",
         borderRadius: 10,
         width: "300",
-        height: "300"
+        height: "200",
+        justifyContent: "space-around",
     },
     text: {
         fontSize: 18,
