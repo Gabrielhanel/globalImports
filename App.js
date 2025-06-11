@@ -149,8 +149,8 @@ export default function App() {
         }}
       >
         <CartProvider>
-        <FavoritesProvider>
         <CardProductProvider>
+                  <FavoritesProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="MainTabs">
             <Stack.Screen
@@ -190,8 +190,8 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
+        </FavoritesProvider>
         </CardProductProvider>
-                </FavoritesProvider>
                 </CartProvider>
       </SafeAreaView>
     </>
