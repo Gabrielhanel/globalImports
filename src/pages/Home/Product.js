@@ -20,7 +20,7 @@ export default function Home({ route }) {
 
   function handleAddProduct(product) {
     addProduct(product);
-    setModalVisible(!isModalVisible)
+    setModalVisible(true);
   }
 
   const { product, images } = route.params;
@@ -43,7 +43,7 @@ export default function Home({ route }) {
               <View style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', backgroundColor: 'white', width: 200, height: 200, borderRadius: 20 }}>
                 <Text style={{ fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center' }}>Adicionado com sucesso!</Text>
 
-                <TouchableOpacity onPress={handleAddProduct} style={{ marginTop: 50, backgroundColor: "#26919B", width: 100, height: 40, borderRadius: 10 }}>
+                <TouchableOpacity onPress={() => setModalVisible(false)} style={{ marginTop: 50, backgroundColor: "#26919B", width: 100, height: 40, borderRadius: 10 }}>
                   <View style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', marginTop: 10 }}>
                     <Text style={{ fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Fechar</Text>
                   </View>

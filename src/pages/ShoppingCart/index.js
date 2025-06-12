@@ -10,10 +10,9 @@ import {
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { BaseRouter } from "@react-navigation/native";
-//TODO: Corrigir bug: ao ter 2 itens no carrinho, o botão de finalizar compra some
 //TODO: Adicionar funcionalidade: botão de finalizar compra e botão de remover do carrinho
 // TODO: Na parte em que usarmos os produtos, fazer o useEffect ao inves de usar o useContext
-// TODO: Ao clicar no botão de adicionar ao carrinho, exibir um modal de confirmação
+
 export default function Cart() {
   const { cart } = useContext(CartContext);
   return (
@@ -21,7 +20,17 @@ export default function Cart() {
       <FlatList
         data={cart}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id?.toString()}
+        contentContainerStyle={{ paddingBottom: 200 }}
+        ListFooterComponent={
+          cart.length > 0 ? (
+            <View style={{ marginVertical: 20, alignItems: 'center' }}>
+              <TouchableOpacity style={styles.btn}>
+                <Text style={styles.textBtn}>Finalizar Compra</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null
+        }
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>Nenhum item no carrinho</Text>
@@ -44,16 +53,7 @@ export default function Cart() {
             <Text style={styles.price}>R$ {item.price}</Text>
           </View>
         )}
-        contentContainerStyle={{ paddingBottom: 120 }}
       />
-
-      {cart.length > 0 && (
-        <View style={styles.btnWrapper}>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.textBtn}>Finalizar Compra</Text>
-          </TouchableOpacity>
-        </View>
-      )}
     </View>
   );
 }
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: "#f4f4f4",
-    position: "relative", // importante para o botão absoluto funcionar
+    position: "relative",
   },
   item: {
     backgroundColor: "#fff",

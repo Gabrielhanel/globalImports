@@ -10,7 +10,7 @@ const Favorite = () => {
   const favoriteProducts = products.filter(product => favorites.includes(product.id));
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <FlatList
         data={favoriteProducts}
         keyExtractor={(item) => item.id.toString()}
@@ -30,9 +30,8 @@ const Favorite = () => {
   );
 };
 const styles = StyleSheet.create({
-  container: {
-  },
   item: {
+    flex: 1,
     backgroundColor: "#fff",
     marginTop: 60,
     marginBottom: -30,
