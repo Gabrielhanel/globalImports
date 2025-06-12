@@ -5,22 +5,22 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import { useContext } from "react";
-import { CartContext } from "../../contexts/CartContext";
-import { BaseRouter } from "@react-navigation/native";
+  Dimensions
+} from 'react-native'
+import { useContext } from 'react'
+import { CartContext } from '../../contexts/CartContext'
+import { BaseRouter } from '@react-navigation/native'
 //TODO: Adicionar funcionalidade: botão de finalizar compra e botão de remover do carrinho
 // TODO: Na parte em que usarmos os produtos, fazer o useEffect ao inves de usar o useContext
 
-export default function Cart() {
-  const { cart } = useContext(CartContext);
+export default function Cart () {
+  const { cart } = useContext(CartContext)
   return (
     <View style={styles.wrapper}>
       <FlatList
         data={cart}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id?.toString()}
+        keyExtractor={item => item.id?.toString()}
         contentContainerStyle={{ paddingBottom: 200 }}
         ListFooterComponent={
           cart.length > 0 ? (
@@ -38,84 +38,88 @@ export default function Cart() {
         )}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <View style={{ justifyContent: "space-between" }}>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.brand}>{item.brand}</Text>
+            <View style={{ justifyContent: 'space-between'}}>
+              <View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.brand}>{item.brand}</Text>
+                </View>
               </View>
-              <TouchableOpacity>
-                <Image
-                  source={require("../../media/components/Trash.png")}
-                  style={{ width: 30, height: 30, marginLeft: 280 }}
-                />
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../media/components/Trash.png')}
+                    style={{ width: 30, height: 30, marginLeft: 280 }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             <Text style={styles.price}>R$ {item.price}</Text>
           </View>
         )}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: "#f4f4f4",
-    position: "relative",
+    backgroundColor: '#f4f4f4',
+    position: 'relative'
   },
   item: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginTop: 20,
     marginHorizontal: 20,
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 10
   },
   title: {
     fontSize: 18,
     maxWidth: 180,
-    fontFamily: "K2D_700Bold",
+    fontFamily: 'K2D_700Bold'
   },
   brand: {
     fontSize: 20,
     maxWidth: 100,
     marginLeft: 10,
-    fontFamily: "K2D_100Thin",
+    fontFamily: 'K2D_100Thin'
   },
   price: {
     fontSize: 20,
     marginLeft: 30,
-    fontFamily: "K2D_700Bold",
-    color: "#26919B",
+    fontFamily: 'K2D_700Bold',
+    color: '#26919B'
   },
   btnWrapper: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 20,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   btn: {
-    backgroundColor: "#26919B",
+    backgroundColor: '#26919B',
     width: 250,
     height: 60,
     borderRadius: 6,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   textBtn: {
     fontSize: 17,
-    color: "white",
-    fontFamily: "K2D_700Bold",
+    color: 'white',
+    fontFamily: 'K2D_700Bold'
   },
   emptyContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 200
   },
   emptyText: {
     fontSize: 16,
-    color: "#555",
-  },
-});
+    color: '#555'
+  }
+})

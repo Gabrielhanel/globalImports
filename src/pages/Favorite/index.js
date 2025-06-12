@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { View, FlatList, Text, StyleSheet, Image } from 'react-native';
 import { FavoritesContext } from '../../contexts/favoriteContext';
 import { CardProductContext } from '../../contexts/cardProduct';
 
@@ -14,12 +14,25 @@ const Favorite = () => {
       <FlatList
         data={favoriteProducts}
         keyExtractor={(item) => item.id.toString()}
+                ListEmptyComponent={() => (
+                  <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyText}>Nenhum item curtido</Text>
+                  </View>
+                )}
         renderItem={({ item }) => (
           <View style={styles.item}>
             <View style={{ justifyContent: "space-between" }}>
               <View style={{ flexDirection: "row" }}>
+                <View> 
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.brand}>{item.brand}</Text>
+                </View>
+                <View style={{marginLeft: 85}}>
+                <Image
+                source={require('../../media/home/shopping_cart-gray.png')}
+                style={{width: 30, height: 30}}
+                />
+                </View>
               </View>
             </View>
             <Text style={styles.price}>R$ {item.price}</Text>
@@ -71,6 +84,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "white",
     fontFamily: "K2D_700Bold",
+  },
+    emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 200,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#555",
   },
 });
 

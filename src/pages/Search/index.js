@@ -16,7 +16,7 @@ export default function SearchScreen() {
       <View style={{flexDirection: "row"}}>
       <TextInput
         style={styles.input}
-        placeholder="Procure algo inútil..."
+        placeholder="Procure algo..."
         value={search}
         onChangeText={setSearch}
       />

@@ -34,7 +34,7 @@ export default function Home({ route }) {
           <View style={{flexDirection: "row", alignSelf: "center",}}>
           <TouchableOpacity style={styles.cart} onPress={() => handleAddProduct(product)} >
             <Image
-              source={require("../../media/home/shopping_cart.png")}
+              source={require("../../media/home/shopping_cart-white.png")}
               style={{ width: 30, height: 30, marginLeft: 10}}
             />
           </TouchableOpacity>
