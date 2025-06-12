@@ -24,6 +24,7 @@ export default function EditProfile() {
   const [imagem, setImagem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
+  //REGEX
   const formatarTelefone = (valor) => {
     // Remove tudo que não for número
     const somenteNumeros = valor.replace(/\D/g, "");

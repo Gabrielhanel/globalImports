@@ -10,39 +10,50 @@ import {
 } from "react-native";
 import GoBack from "../../components/goBack";
 import ButtonLike from "../../components/ButtonLike";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
+import Modal from 'react-native-modal';
 
 export default function Home({ route }) {
   const { cart, addProduct } = useContext(CartContext);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   function handleAddProduct(product) {
     addProduct(product);
+    setModalVisible(!isModalVisible)
   }
 
   const { product, images } = route.params;
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={{ flexDirection: "row", alignSelf: "center" }}>
-          <TouchableOpacity style={styles.back}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", paddingHorizontal: 20}}>
+          <TouchableOpacity>
             <GoBack />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.condition}>
-            <Text style={styles.textCondition}>Condições de Financiamento</Text>
-            <Image
-              source={require("../../media/home/santander.png")}
-              style={{ width: 30, height: 30, marginRight: 55 }}
-            />
-          </TouchableOpacity>
+          <View style={{flexDirection: "row", alignSelf: "center",}}>
           <TouchableOpacity style={styles.cart} onPress={() => handleAddProduct(product)} >
-            <Text style={styles.textCondition}>Adicionar ao carrinho</Text>
             <Image
               source={require("../../media/home/shopping_cart.png")}
-              style={{ width: 30, height: 30, marginRight: 55 }}
+              style={{ width: 30, height: 30, marginLeft: 10}}
             />
           </TouchableOpacity>
+          <Modal isVisible={isModalVisible}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', backgroundColor: 'white', width: 200, height: 200, borderRadius: 20 }}>
+                <Text style={{ fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center' }}>Adicionado com sucesso!</Text>
+
+                <TouchableOpacity onPress={handleAddProduct} style={{ marginTop: 50, backgroundColor: "#26919B", width: 100, height: 40, borderRadius: 10 }}>
+                  <View style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', marginTop: 10 }}>
+                    <Text style={{ fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Fechar</Text>
+                  </View>
+                </TouchableOpacity>
+                <View />
+              </View>
+            </View>
+          </Modal>
           <ButtonLike product={product} />
+          </View>
         </View>
         <FlatList
           data={images}
@@ -169,34 +180,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  condition: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#ea1d25",
-    borderRadius: 15,
-    marginTop: 50,
-    width: 150,
-    height: 50,
-  },
-  textCondition: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#fff",
-    marginLeft: 10,
-    fontFamily: "K2D_700Bold",
-    maxWidth: 100,
-  },
   cart: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#26919B",
     borderRadius: 15,
-    marginTop: 50,
-    width: 150,
-    height: 50,
-    margin: 10,
+    width: 45,
+    height: 45,
+    marginTop: 55,
+    marginRight: 15
   },
   brand: {
     fontSize: 24,

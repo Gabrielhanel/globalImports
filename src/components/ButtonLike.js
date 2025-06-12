@@ -8,7 +8,8 @@ export default function ButtonLike({ product }) {
 
   return (
     <View>
-      <TouchableOpacity style={styles.favorite} onPress={() => toggleFavorite(product.id)}>
+      <TouchableOpacity style={styles.favorite} onPress={() => toggleFavorite(product.id)}
+        >
         <Image
           source={liked ? 
             require("../media/home/favoriteactive.png") : 
