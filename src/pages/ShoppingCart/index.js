@@ -5,35 +5,26 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
-import { CardProductContext } from "../../contexts/cardProduct";
+import { BaseRouter } from "@react-navigation/native";
 //TODO: Corrigir bug: ao ter 2 itens no carrinho, o botão de finalizar compra some
 //TODO: Adicionar funcionalidade: botão de finalizar compra e botão de remover do carrinho
+// TODO: Na parte em que usarmos os produtos, fazer o useEffect ao inves de usar o useContext
+// TODO: Ao clicar no botão de adicionar ao carrinho, exibir um modal de confirmação
 export default function Cart() {
-  const { products } = useContext(CardProductContext);
-  const { cart, addProduct } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   return (
-    <View>
-
-    <View style={styles.container}>
+    <View style={styles.wrapper}>
       <FlatList
         data={cart}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={() => (
-          <View>
-            <Text
-              style={{
-                textAlign: "center",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 200,
-              }}
-            >
-              Nenhum item no carrinho
-            </Text>
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Nenhum item no carrinho</Text>
           </View>
         )}
         renderItem={({ item }) => (
@@ -53,33 +44,32 @@ export default function Cart() {
             <Text style={styles.price}>R$ {item.price}</Text>
           </View>
         )}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
       />
-      { cart.length > 0 && (
-                <TouchableOpacity>
-          <View style={styles.btn}>
-            <Text style={styles.textBtn}>Finalizar Compra</Text>
-          </View>
-        </TouchableOpacity>
-      )
 
-      }
-          </View>
+      {cart.length > 0 && (
+        <View style={styles.btnWrapper}>
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.textBtn}>Finalizar Compra</Text>
+          </TouchableOpacity>
         </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#f4f4f4",
+    position: "relative", // importante para o botão absoluto funcionar
   },
   item: {
     backgroundColor: "#fff",
-    marginTop: 60,
-    marginBottom: -30,
-    marginLeft: 20,
+    marginTop: 20,
+    marginHorizontal: 20,
     padding: 20,
     borderRadius: 10,
-    maxWidth: 350,
   },
   title: {
     fontSize: 18,
@@ -98,11 +88,16 @@ const styles = StyleSheet.create({
     fontFamily: "K2D_700Bold",
     color: "#26919B",
   },
+  btnWrapper: {
+    position: "absolute",
+    bottom: 20,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   btn: {
     backgroundColor: "#26919B",
     width: 250,
-    marginTop: 400,
-    marginLeft: 80,
     height: 60,
     borderRadius: 6,
     alignItems: "center",
@@ -112,5 +107,15 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "white",
     fontFamily: "K2D_700Bold",
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 200,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#555",
   },
 });
