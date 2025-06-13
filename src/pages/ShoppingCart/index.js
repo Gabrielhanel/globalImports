@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import { useContext } from 'react'
 import { CartContext } from '../../contexts/CartContext'
-import { BaseRouter } from '@react-navigation/native'
 //TODO: Adicionar funcionalidade: botão de finalizar compra e botão de remover do carrinho
 // TODO: Na parte em que usarmos os produtos, fazer o useEffect ao inves de usar o useContext
 

@@ -30,8 +30,6 @@ export default function HomeScreen() {
 
 <FlatList
   data={products}
-  alignItems= "center"
-  justifyContent= "center"
   keyExtractor={(item) => item.id?.toString() || item.name}
   contentContainerStyle={{ paddingBottom: 80 }}
   showsVerticalScrollIndicator={false}
@@ -92,8 +90,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 160,
     backgroundColor: "#fff",
-    paddingTop: 50,
     paddingHorizontal: 20,
   },
   item: {
