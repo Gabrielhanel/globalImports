@@ -1,11 +1,28 @@
 import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useContext,useState } from 'react';
-import { CardProductContext } from "../../contexts/cardProduct";
-import { useNavigation } from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import api from '../../services/Api';
 
 export default function SearchScreen() {
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const response = await api.get("/products");
+          setProducts(response.data.products);
+        } catch (error) {
+          console.error("Erro ao buscar os produtos:", error);
+        }
+      };
+
+      fetchData();
+    }, [])
+  );
+
+
   const navigation = useNavigation();
-    const { products } = useContext(CardProductContext);
+  const [products, setProducts] = useState([]);
     const [search, setSearch] = useState('');
     const filteredData = products.filter(item =>
     item.title.toLowerCase().includes(search.toLowerCase())

@@ -1,11 +1,12 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import OrderBy from "./OrderBy";
 import Category from "./Category";
-
+import GoBack from "../../components/goBack";
 export default function Filter() {
     
     return (
         <ScrollView style={styles.container}>
+            <GoBack/>
             <View style={{alignItems: "center",}}>
             <Text style={[styles.text, {marginTop: 70}]}>Ordenar por:</Text>
             <OrderBy/>

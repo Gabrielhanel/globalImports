@@ -15,7 +15,7 @@ import { CartContext } from "../../contexts/CartContext";
 import Modal from 'react-native-modal';
 
 export default function Home({ route }) {
-  const { cart, addProduct } = useContext(CartContext);
+  const { addProduct } = useContext(CartContext);
   const [isModalVisible, setModalVisible] = useState(false);
 
   function handleAddProduct(product) {

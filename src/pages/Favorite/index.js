@@ -1,25 +1,51 @@
-import React, { useContext } from 'react';
-import { View, FlatList, Text, StyleSheet, Image } from 'react-native';
+import React, { useContext, useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FavoritesContext } from '../../contexts/favoriteContext';
-import { CardProductContext } from '../../contexts/cardProduct';
+import api from '../../services/Api';
+import { CartContext } from '../../contexts/CartContext';
 
-const Favorite = () => {
+export default function Favorite() {
+  const {cart, removeProduct, addProduct} = useContext(CartContext);
   const { favorites } = useContext(FavoritesContext);
-  const { products } = useContext(CardProductContext);
-
+  const [products, setProducts] = useState([]);
   const favoriteProducts = products.filter(product => favorites.includes(product.id));
+
+    useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const response = await api.get("/products");
+          setProducts(response.data.products);
+        } catch (error) {
+          console.error("Erro ao buscar os produtos:", error);
+        }
+      };
+
+      fetchData();
+    }, [])
+  );
+
+  function handleAddProduct(product) {
+    addProduct(product);
+  }
+
 
   return (
     <View style={{flex: 1}}>
       <FlatList
         data={favoriteProducts}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(_, i) => i.toString()}
                 ListEmptyComponent={() => (
                   <View style={styles.emptyContainer}>
                     <Text style={styles.emptyText}>Nenhum item curtido</Text>
                   </View>
                 )}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => {
+          // Verifica se o item atual já está no carrinho comparando os IDs
+            const isInCart = cart.some(c => c.id === item.id);
+            
+          return (
           <View style={styles.item}>
             <View style={{ justifyContent: "space-between" }}>
               <View style={{ flexDirection: "row" }}>
@@ -27,17 +53,31 @@ const Favorite = () => {
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.brand}>{item.brand}</Text>
                 </View>
-                <View style={{marginLeft: 85}}>
+                <View style={{marginLeft: 85, marginTop: 30}}>
+
+                <View style={{marginBottom: 30}}>
+                <TouchableOpacity onPress={() => handleAddProduct(item)}>
                 <Image
-                source={require('../../media/home/shopping_cart-gray.png')}
+                source={ isInCart ? require('../../media/home/shopping_cart_off.png') : require('../../media/home/shopping_cart-gray.png')}
                 style={{width: 30, height: 30}}
                 />
+                </TouchableOpacity>
+                </View>
+
+                <View>
+                  <TouchableOpacity onPress={() => removeProduct(item.id)}>
+                    <Image
+                      source={require('../../media/home/favoriteactive.png')}
+                      style={{width: 30, height: 30}}
+                    />
+                  </TouchableOpacity>
+                </View>
                 </View>
               </View>
             </View>
             <Text style={styles.price}>R$ {item.price}</Text>
           </View>
-        )}
+  )}}
       />
     </View>
   );
@@ -96,5 +136,3 @@ const styles = StyleSheet.create({
     color: "#555",
   },
 });
-
-export default Favorite;

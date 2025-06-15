@@ -7,7 +7,9 @@ import {
 } from "react-native";
 import { useState } from "react";
 import GoBack from "../../components/goBack";
+import { useNavigation } from "@react-navigation/native";
 export default function Address() {
+  const navigation = useNavigation();
     const [address] = useState({
     cep: "99870-000",
     city: "Tupanci do Sul",
@@ -17,7 +19,8 @@ export default function Address() {
     reference: "Casa do Ricas",
     uf: "RS",
     neighborhood: "Centro",
-  });
+  })
+
   const [cep, setCep] = useState(address.cep);
   const [city, setCity] = useState(address.city);
   const [street, setStreet] = useState(address.street);
@@ -99,7 +102,7 @@ export default function Address() {
         />
       </View>
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.textBtn}>Salvar</Text>
+        <Text style={styles.textBtn} >Salvar</Text>
       </TouchableOpacity>
     </View>
   );

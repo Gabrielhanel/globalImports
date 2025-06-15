@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import ButtonEditProfile from "../../components/ButtonEditProfile";
 import ButtonAddress from "../../components/ButtonAddress";
+import { useNavigation } from "@react-navigation/native";
 export default function UserProfile() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -17,7 +19,7 @@ export default function UserProfile() {
         </View>
       </View>
       <ButtonAddress/>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("MyOrders")}>
           <View style={[styles.card, { flexDirection: "row" }]}>
             <Image
             source={require("../../media/profile/car.png")}
@@ -43,13 +45,13 @@ export default function UserProfile() {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 100, // isso move tudo pra baixo
+    paddingTop: 100, 
     paddingLeft: 40,
-    backgroundColor: "#f2f2f2", // só pra contraste
+    backgroundColor: "#f2f2f2", 
   },
   row: {
     flexDirection: "row",
-    alignItems: "center", // alinha imagem e texto na mesma altura
+    alignItems: "center", 
   },
   imageContainer: {
     width: 100,

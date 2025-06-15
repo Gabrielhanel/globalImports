@@ -16,11 +16,15 @@ import Product from "../pages/Home/Product";
 import EditProfile from "../pages/Profile/EditProfile";
 import Address from "../pages/Profile/Address";
 import Filter from "../pages/Search/Filter";
+import Checkout from "../pages/ShoppingCart/Checkout";
+import PurchaseConfirmated from "../pages/ShoppingCart/PurchaseConfirmated"
+import MyOrders from "../pages/Profile/MyOrders";
 
 // Contextos
 import CardProductProvider from "../contexts/cardProduct";
 import { FavoritesProvider } from "../contexts/favoriteContext";
 import CartProvider from "../contexts/CartContext";
+import { OrderContext, OrderProvider } from "../contexts/orderContext";
 
 // Navegadores
 const Stack = createStackNavigator();
@@ -96,6 +100,7 @@ export default function Routes() {
     <CartProvider>
       <CardProductProvider>
         <FavoritesProvider>
+        <OrderProvider>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="MainTabs">
               <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
@@ -105,8 +110,12 @@ export default function Routes() {
               <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
               <Stack.Screen name="Address" component={Address} options={{ headerShown: false }} />
               <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
+              <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
+              <Stack.Screen name="PurchaseConfirmated" component={PurchaseConfirmated} options={{ headerShown: false }} />
+              <Stack.Screen name="MyOrders" component={MyOrders} options={{ headerShown: false }} />
             </Stack.Navigator>
           </NavigationContainer>
+          </OrderProvider>
         </FavoritesProvider>
       </CardProductProvider>
     </CartProvider>

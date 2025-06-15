@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAFAFA",
     borderRadius: 10,
     width: "300",
-    height: "300"
+    height: "350"
   },
   text: {
     fontSize: 18,
