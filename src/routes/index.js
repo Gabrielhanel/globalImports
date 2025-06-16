@@ -121,3 +121,84 @@ export default function Routes() {
     </CartProvider>
   );
 }
+
+/*
+Filtros de imagens para usar na tela home - LÓGICA
+
+
+import React, {useEffect, useState} from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native'
+import api from '../services/Api';
+import { useNavigation } from '@react-navigation/native';
+
+export default function Home() {
+  const [people, setPeople] = useState([]);
+      const navigation = useNavigation();  
+
+  useEffect(() => {
+    async function loadPeople() {
+      const response = await api.get('/people');
+    const selectedIds = ['1', '2', '3', '4', '5', '13', '14', '20', '22', '44'];
+
+    const filteredCharacters = response.data.filter(item => {
+      const id = item.url.split('/').filter(Boolean).pop();
+      return selectedIds.includes(id);
+    });
+
+    const images = {
+      'Luke Skywalker': require('../img/luke.png'),
+      'Leia Organa': require('../img/leia.png'),
+      'Darth Vader': require('../img/darth_vader.png'),
+      'Chewbacca': require('../img/chewbacca.png'),
+      'Yoda': require('../img/yoda.png'),
+      'Han Solo': require('../img/han-solo.png'),
+      'C-3PO': require('../img/C3PO.png'),
+      'R2-D2': require('../img/R2-D2.png'),
+      'Darth Maul': require('../img/darth-maul.png'),
+      'Boba Fett': require('../img/boba-fett.png'),
+    };
+
+    function getImage(name) {
+      return images[name] || require('../img/capacete-stormtrooper.png');
+    }
+
+    const peopleWithImages = filteredCharacters.map(item => {
+      return {
+        ...item,
+        image: getImage(item.name),
+      };
+    });
+    
+    setPeople(peopleWithImages);
+    }
+    loadPeople();
+  }, []);
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>HOLOCRON ARCHIVES</Text>
+      <FlatList
+      numColumns={2}
+      key={'2columns'}
+      keyExtractor={(item) => item.name}
+      data={people}
+      showsVerticalScrollIndicator={false}
+      renderItem={({item}) => 
+      <TouchableOpacity onPress={() => navigation.navigate('Person', {
+        person: item,
+        img: item.image,
+      })}>
+        <View>
+            <View style={styles.card}>
+              <Image source={item.image} style={styles.img} />
+              <Text style={styles.nameCard}>{item.name.toUpperCase()}</Text>
+          </View>
+        </View>
+
+      </TouchableOpacity>
+      }
+      />
+      </View>
+  )
+}
+
+*/
