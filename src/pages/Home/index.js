@@ -48,7 +48,6 @@ export default function HomeScreen() {
       <FlatList
         data={products}
         keyExtractor={(item) => item.id?.toString() || item.name}
-        contentContainerStyle={{ paddingBottom: 80 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <TouchableOpacity

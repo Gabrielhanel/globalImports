@@ -57,6 +57,9 @@ export default function Favorite() {
 
                 <View style={{marginBottom: 30}}>
                 <TouchableOpacity onPress={() => handleAddProduct(item)}>
+                {/* TODO: ao clicar pela segunda vez, ele remove do carrinho
+                TODO: Ao clicar no botão do coração ele remove o item da pagina
+                */}
                 <Image
                 source={ isInCart ? require('../../media/home/shopping_cart_off.png') : require('../../media/home/shopping_cart-gray.png')}
                 style={{width: 30, height: 30}}

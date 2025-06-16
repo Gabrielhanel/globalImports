@@ -1,13 +1,25 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import {OrderContext} from '../../contexts/orderContext';
 import { useContext } from 'react';
-
+//import GoBack from '../../components/goBack';
 export default function MyOrders( {route}) {
 
   const {order} = useContext(OrderContext);
+//TODO: Questão do botão de voltar 
+{/*
+            onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "User" }],
+            })
+          }
+  */}
+
+
 
  return (
-   <View>
+   <View style={{flex: 1}}>
+     {/*<GoBack/>*/}
      <Text style={styles.text}>Meus Pedidos:</Text>
 <FlatList
   data={order}

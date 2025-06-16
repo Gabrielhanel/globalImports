@@ -15,43 +15,60 @@ export default function UserProfile() {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Usuário</Text>
-          <ButtonEditProfile/>
+          <ButtonEditProfile />
         </View>
       </View>
-      <ButtonAddress/>
-        <TouchableOpacity onPress={() => navigation.navigate("MyOrders")}>
-          <View style={[styles.card, { flexDirection: "row" }]}>
-            <Image
+      <ButtonAddress />
+      <TouchableOpacity onPress={() => navigation.navigate("MyOrders")}>
+        <View style={[styles.card, { flexDirection: "row" }]}>
+          <Image
             source={require("../../media/profile/car.png")}
-            style={{marginRight: 10 }}
+            style={{ marginRight: 10 }}
+          />
+          <Text style={styles.textCard}>Meus Pedidos</Text>
+        </View>
+      </TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            })
+          }
+        >
+          <View
+            style={[
+              styles.logout,
+              {
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginTop: 270,
+              },
+            ]}
+          >
+            <Image
+              source={require("../../media/profile/login.png")}
+              style={{ width: 30, height: 30 }}
             />
-            <Text style={styles.textCard}>Meus Pedidos</Text>
+            <Text style={styles.textLogout}>Sair da conta</Text>
           </View>
         </TouchableOpacity>
-              <View>
-        <TouchableOpacity style={{alignItems: "center",}}>
-            <View style={[styles.logout, {flexDirection: "row", justifyContent: "flex-end", marginTop: 270}]}>
-                <Image
-                source={require("../../media/profile/login.png")}
-                style={{width: 30, height: 30}}
-                />
-                <Text style={styles.textLogout}>Sair da conta</Text>
-            </View>
-        </TouchableOpacity>
       </View>
-      </View>
+    </View>
   );
 }
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 100, 
+    paddingTop: 100,
     paddingLeft: 40,
-    backgroundColor: "#f2f2f2", 
+    backgroundColor: "#f2f2f2",
   },
   row: {
     flexDirection: "row",
-    alignItems: "center", 
+    alignItems: "center",
   },
   imageContainer: {
     width: 100,
@@ -88,42 +105,42 @@ export const styles = StyleSheet.create({
     color: "white",
     fontFamily: "K2D_700Bold",
   },
-    card: {
+  card: {
     marginTop: 10,
     width: 300,
-    flexDirection: 'row',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
     margin: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
     // Sombras no iOS
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 10,
   },
   textCard: {
-      maxWidth: 100,
-      fontSize: 18,
-      color: "#797979",
-      fontFamily: "K2D_700Bold",
+    maxWidth: 100,
+    fontSize: 18,
+    color: "#797979",
+    fontFamily: "K2D_700Bold",
   },
   logout: {
-      backgroundColor: 'red',
-      maxWidth: 165,
-      height: 40,
-      borderRadius: 10,
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: 10
+    backgroundColor: "red",
+    maxWidth: 165,
+    height: 40,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 10,
   },
   textLogout: {
-      fontSize: 15,
-      paddingLeft: 10,
-      paddingRight: 10,
-      color: 'white',
-      fontFamily: 'K2D_700Bold'
-  }
+    fontSize: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+    color: "white",
+    fontFamily: "K2D_700Bold",
+  },
 });

@@ -3,7 +3,8 @@ import OrderBy from "./OrderBy";
 import Category from "./Category";
 import GoBack from "../../components/goBack";
 export default function Filter() {
-    
+    //TODO: Transformar o filtro, ou num modal ou num picker
+    //TODO: Ajustar espaço entre botão de voltar e texto
     return (
         <ScrollView style={styles.container}>
             <GoBack/>

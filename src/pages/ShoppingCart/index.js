@@ -11,7 +11,9 @@ import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
 //TODO: Adicionar funcionalidade: botão de finalizar compra e botão de remover do carrinho
 // TODO: Remover item do carrinho apos a compra
-
+// TODO: Filtro das imagens / marcas - base no comentario do index.js - pasta routes
+//  TODO: Questão das datas de nascimento -possibilidade de ter que fazer o prebuild
+// TODO: Funcionalidade do botão da lixeira
 import { useNavigation } from "@react-navigation/native";
 
 export default function Cart() {
