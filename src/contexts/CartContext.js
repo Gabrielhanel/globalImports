@@ -15,10 +15,11 @@ function CartProvider({ children }) {
       cartList[indexItem].amount = cartList[indexItem].amount + 1;
       cartList[indexItem].total =
         cartList[indexItem].amount * cartList[indexItem].price;
-      console.log(cartList);
       setCart(cartList);
       return;
     }
+
+    //TODO: Ajustar a questão do amount
     let data = {
       ...newItem,
       amount: 1,
