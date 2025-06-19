@@ -15,10 +15,14 @@ export const FavoritesProvider = ({ children }) => {
     }
   };
 
+    function removeFavorite(productId) {
+    setFavorites((prev) => prev.filter((id) => id !== productId));
+  }
+
   const isFavorite = (productId) => favorites.includes(productId);
 
   return (
-    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite }}>
+    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite, removeFavorite }}>
       {children}
     </FavoritesContext.Provider>
   );

@@ -60,9 +60,6 @@ export default function HomeScreen() {
           >
             <View style={styles.card}>
               <View>
-                <Text style={[styles.item, { fontWeight: "bold" }]}>
-                  {item.brand?.toUpperCase()}
-                </Text>
                 <Text
                   style={[
                     styles.item,

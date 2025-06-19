@@ -20,6 +20,7 @@ import Checkout from "../pages/ShoppingCart/Checkout";
 import PurchaseConfirmated from "../pages/ShoppingCart/PurchaseConfirmated"
 import MyOrders from "../pages/Profile/MyOrders";
 
+//TODO: colocar os contextos no app.js
 // Contextos
 import CardProductProvider from "../contexts/cardProduct";
 import { FavoritesProvider } from "../contexts/favoriteContext";

@@ -1,17 +1,27 @@
-import React, { useContext, useCallback, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { FavoritesContext } from '../../contexts/favoriteContext';
-import api from '../../services/Api';
-import { CartContext } from '../../contexts/CartContext';
+import React, { useContext, useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  View,
+  FlatList,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { FavoritesContext } from "../../contexts/favoriteContext";
+import api from "../../services/Api";
+import { CartContext } from "../../contexts/CartContext";
 
 export default function Favorite() {
-  const {cart, removeProduct, addProduct} = useContext(CartContext);
+  const { cart, removeFromCart, addProduct } = useContext(CartContext);
   const { favorites } = useContext(FavoritesContext);
   const [products, setProducts] = useState([]);
-  const favoriteProducts = products.filter(product => favorites.includes(product.id));
-
-    useFocusEffect(
+  const favoriteProducts = products.filter((product) =>
+    favorites.includes(product.id)
+  );
+  const { removeFavorite } = useContext(FavoritesContext);
+  useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
         try {
@@ -26,65 +36,80 @@ export default function Favorite() {
     }, [])
   );
 
-  function handleAddProduct(product) {
-    addProduct(product);
-  }
-
+  const handleRemoveItem = (id) => {
+    Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Remover",
+        style: "destructive",
+        onPress: () => removeFromCart(id), // ✅ Só executa depois que o usuário clicar!
+      },
+    ]);
+  };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <FlatList
         data={favoriteProducts}
         keyExtractor={(_, i) => i.toString()}
-                ListEmptyComponent={() => (
-                  <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>Nenhum item curtido</Text>
-                  </View>
-                )}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Nenhum item curtido</Text>
+          </View>
+        )}
         renderItem={({ item }) => {
           // Verifica se o item atual já está no carrinho comparando os IDs
-            const isInCart = cart.some(c => c.id === item.id);
-            
+          const isInCart = cart.some((c) => c.id === item.id);
+          const handleToggleCartItem = (item) => {
+            if (isInCart) {
+              handleRemoveItem(item.id);
+            } else {
+              addProduct(item);
+            }
+          };
           return (
-          <View style={styles.item}>
-            <View style={{ justifyContent: "space-between" }}>
-              <View style={{ flexDirection: "row" }}>
-                <View> 
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.brand}>{item.brand}</Text>
-                </View>
-                <View style={{marginLeft: 85, marginTop: 30}}>
+            <View style={styles.item}>
+              <View style={{ justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "row" }}>
+                  <View>
+                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.brand}>{item.brand}</Text>
+                  </View>
+                  <View style={{ marginLeft: 85, marginTop: 30 }}>
+                    <View style={{ marginBottom: 30 }}>
+                      <TouchableOpacity
+                        onPress={() => handleToggleCartItem(item)}
+                      >
+                        <Image
+                          source={
+                            isInCart
+                              ? require("../../media/home/shopping_cart_off.png")
+                              : require("../../media/home/shopping_cart-gray.png")
+                          }
+                          style={{ width: 30, height: 30 }}
+                        />
+                      </TouchableOpacity>
+                    </View>
 
-                <View style={{marginBottom: 30}}>
-                <TouchableOpacity onPress={() => handleAddProduct(item)}>
-                {/* TODO: ao clicar pela segunda vez, ele remove do carrinho
-                TODO: Ao clicar no botão do coração ele remove o item da pagina
-                */}
-                <Image
-                source={ isInCart ? require('../../media/home/shopping_cart_off.png') : require('../../media/home/shopping_cart-gray.png')}
-                style={{width: 30, height: 30}}
-                />
-                </TouchableOpacity>
-                </View>
-
-                <View>
-                  <TouchableOpacity onPress={() => removeProduct(item.id)}>
-                    <Image
-                      source={require('../../media/home/favoriteactive.png')}
-                      style={{width: 30, height: 30}}
-                    />
-                  </TouchableOpacity>
-                </View>
+                    <View>
+                      <TouchableOpacity onPress={() => removeFavorite(item.id)}>
+                        <Image
+                          source={require("../../media/home/favoriteactive.png")}
+                          style={{ width: 30, height: 30 }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               </View>
+              <Text style={styles.price}>R$ {item.price}</Text>
             </View>
-            <Text style={styles.price}>R$ {item.price}</Text>
-          </View>
-  )}}
+          );
+        }}
       />
     </View>
   );
-};
+}
 const styles = StyleSheet.create({
   item: {
     flex: 1,
@@ -128,7 +153,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "K2D_700Bold",
   },
-    emptyContainer: {
+  emptyContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert
 } from "react-native";
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
@@ -18,10 +19,21 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Cart() {
   const navigation = useNavigation();
-  const { cart } = useContext(CartContext);
+  const { cart, removeFromCart } = useContext(CartContext);
   const totalValue = cart
     .reduce((total, item) => total + item.price, 0)
     .toFixed(2);
+
+    const handleRemoveItem = (id) => {
+      Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Remover",
+          style: "destructive",
+          onPress: () => removeFromCart(id),  // ✅ Só executa depois que o usuário clicar!
+        },
+      ]);
+    };
 
   return (
     <View style={styles.wrapper}>
@@ -61,7 +73,7 @@ export default function Cart() {
                 </View>
               </View>
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => handleRemoveItem(item.id)}>
                   <Image
                     source={require("../../media/components/Trash.png")}
                     style={{ width: 30, height: 30, marginLeft: 280 }}
