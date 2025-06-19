@@ -9,7 +9,7 @@ import { OrderContext } from "../../contexts/orderContext";
 export default function Checkout({ route }) {
     const navigation = useNavigation();
     const {addOrder} = useContext(OrderContext);
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
   const { totalValue } = route.params;
 const [methodPayment, setMethodPayment] = useState("Transferência Bancária");
 

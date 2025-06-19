@@ -35,8 +35,12 @@ function CartProvider({ children }) {
     );
   }
 
+    function clearCart() {
+    setCart([]);
+  }
+
   return (
-    <CartContext.Provider value={{ cart, addProduct, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addProduct, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
