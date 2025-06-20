@@ -27,21 +27,22 @@ export default function Filter() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: "white",
     },
     text: {
         fontSize: 20,
-        fontFamily: "K2D_700Bold",
+        fontFamily: "K2D_600SemiBold",
         color: "797979",
     },
     btn: {
-        backgroundColor: "#26919B",
+        backgroundColor: "#007F7F",
         width: 150,
         height: 40,
         borderRadius: 6,
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 20,
+        marginBottom: 50,
     },
     textBtn: {
         fontSize: 17,

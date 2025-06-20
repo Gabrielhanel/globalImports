@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image, SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useFonts, K2D_100Thin, K2D_700Bold } from "@expo-google-fonts/k2d";
+import { useFonts, K2D_100Thin, K2D_700Bold, K2D_800ExtraBold, K2D_500Medium, K2D_300Light, K2D_600SemiBold, K2D_200ExtraLight } from "@expo-google-fonts/k2d";
 import Routes from "./src/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     K2D_100Thin,
+    K2D_200ExtraLight,
+    K2D_500Medium,
+    K2D_300Light,
     K2D_700Bold,
+    K2D_600SemiBold,
+    K2D_800ExtraBold
   });
 
   const [loading, setLoading] = useState(true);

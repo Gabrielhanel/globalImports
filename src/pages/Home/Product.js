@@ -23,7 +23,7 @@ export default function Home({ route }) {
     setModalVisible(true);
   }
 
-  const { product, images } = route.params;
+  const { product, images, imageBrand } = route.params;
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -74,6 +74,9 @@ export default function Home({ route }) {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.brand}>{product.brand?.toUpperCase()}</Text>
           <Text style={styles.title}>{product.title}</Text>
+          <TouchableOpacity>
+          <Image source={imageBrand} style={styles.imageBrand} />
+          </TouchableOpacity>
         </View>
         <View style={{ justifyContent: "flex-start", alignItems: "center" }}>
           <Text style={styles.description}>{product.description}</Text>
@@ -258,5 +261,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
     fontFamily: "K2D_700Bold",
+  },
+  imageBrand: {
+    width: 60,
+    height: 60,
+    marginLeft: 20,
   },
 });

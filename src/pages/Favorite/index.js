@@ -48,7 +48,7 @@ export default function Favorite() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <FlatList
         data={favoriteProducts}
         keyExtractor={(_, i) => i.toString()}
@@ -69,13 +69,28 @@ export default function Favorite() {
           };
           return (
             <View style={styles.item}>
+              <View style={{ flexDirection: "row" }}>
               <View style={{ justifyContent: "space-between" }}>
+                <View style={{alignItems: "center", justifyContent: "center"}}>
+                                <Image
+                source={{ uri: item.thumbnail }}
+                style={{ width: 100, height: 100 }}
+                />                  
+                </View>
+
                 <View style={{ flexDirection: "row" }}>
-                  <View>
+                <View style={{ flexDirection: "column" }}>
+                  <View style={{ flexDirection: "row", maxWidth: 160, marginRight: 20 }}>
                     <Text style={styles.title}>{item.title}</Text>
                     <Text style={styles.brand}>{item.brand}</Text>
                   </View>
-                  <View style={{ marginLeft: 85, marginTop: 30 }}>
+                  <View>
+                                  <Text style={styles.price}>R$ {item.price}</Text>
+                    </View>            
+                </View>
+                </View>
+              </View>
+                  <View style={{ marginLeft: 85, marginTop: 30, }}>
                     <View style={{ marginBottom: 30 }}>
                       <TouchableOpacity
                         onPress={() => handleToggleCartItem(item)}
@@ -100,9 +115,7 @@ export default function Favorite() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </View>
               </View>
-              <Text style={styles.price}>R$ {item.price}</Text>
             </View>
           );
         }}
@@ -113,7 +126,9 @@ export default function Favorite() {
 const styles = StyleSheet.create({
   item: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
+    borderWidth: 1,
+    borderColor: "#D5D5D5",
     marginTop: 60,
     marginBottom: -30,
     marginLeft: 20,
@@ -135,6 +150,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 20,
     marginLeft: 30,
+    marginTop: 15,
     fontFamily: "K2D_700Bold",
     color: "#26919B",
   },

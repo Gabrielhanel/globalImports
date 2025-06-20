@@ -34,17 +34,19 @@ export default function OrderBy() {
 
 const styles = StyleSheet.create({
   box: {
-    backgroundColor: "#FAFAFA",
+    backgroundColor: "#F5F5F5",
+    borderColor: "#D0D0D0",
+    borderWidth: 1,
     borderRadius: 10,
     width: "300",
-    height: "350"
+    height: "370"
   },
   text: {
     fontSize: 18,
-    color: "#696969",
+    color: "#797979",
     textAlign: "left",
     marginLeft: 15,
     padding: 10,
-    fontFamily: "K2D_400Regular",
+    fontFamily: "K2D_300Light",
   }
 });

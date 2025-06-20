@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Alert
+  Alert,
 } from "react-native";
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
@@ -24,16 +24,16 @@ export default function Cart() {
     .reduce((total, item) => total + item.price, 0)
     .toFixed(2);
 
-    const handleRemoveItem = (id) => {
-      Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Remover",
-          style: "destructive",
-          onPress: () => removeFromCart(id),  // ✅ Só executa depois que o usuário clicar!
-        },
-      ]);
-    };
+  const handleRemoveItem = (id) => {
+    Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Remover",
+        style: "destructive",
+        onPress: () => removeFromCart(id), // ✅ Só executa depois que o usuário clicar!
+      },
+    ]);
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -51,7 +51,12 @@ export default function Cart() {
               </View>
               <TouchableOpacity
                 style={styles.btn}
-                onPress={() => navigation.navigate("Checkout", { cart: cart, totalValue: totalValue })}
+                onPress={() =>
+                  navigation.navigate("Checkout", {
+                    cart: cart,
+                    totalValue: totalValue,
+                  })
+                }
               >
                 <Text style={styles.textBtn}>Finalizar Compra</Text>
               </TouchableOpacity>
@@ -65,23 +70,46 @@ export default function Cart() {
         )}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <View style={{ justifyContent: "space-between" }}>
-              <View>
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ justifyContent: "space-between" }}>
+                <View
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <Image
+                    source={{ uri: item.thumbnail }}
+                    style={{ width: 100, height: 100 }}
+                  />
+                </View>
+
                 <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.brand}>{item.brand}</Text>
+                  <View style={{ flexDirection: "column" }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        maxWidth: 160,
+                        marginRight: 20,
+                      }}
+                    >
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.brand}>{item.brand}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.price}>R$ {item.price}</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
+
               <View>
                 <TouchableOpacity onPress={() => handleRemoveItem(item.id)}>
                   <Image
                     source={require("../../media/components/Trash.png")}
-                    style={{ width: 30, height: 30, marginLeft: 280 }}
+                    style={{ width: 30, height: 30, marginLeft: 70, marginTop: 30 }}
                   />
                 </TouchableOpacity>
               </View>
+
             </View>
-            <Text style={styles.price}>R$ {item.price}</Text>
           </View>
         )}
       />
@@ -92,12 +120,14 @@ export default function Cart() {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#FFFFFF",
     position: "relative",
-    marginTop: 60,
+    paddingTop: 60,
   },
   item: {
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
     marginTop: 20,
     marginHorizontal: 20,
     padding: 20,
@@ -112,12 +142,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     maxWidth: 100,
     marginLeft: 10,
-    fontFamily: "K2D_100Thin",
+    fontFamily: "K2D_300Light",
   },
   price: {
     fontSize: 20,
     marginLeft: 30,
-    fontFamily: "K2D_700Bold",
+    fontFamily: "K2D_800ExtraBold",
     color: "#26919B",
   },
   btnWrapper: {
@@ -157,7 +187,7 @@ const styles = StyleSheet.create({
   },
   totalValue: {
     fontSize: 20,
-    fontFamily: "K2D_700Bold",
+    fontFamily: "K2D_800ExtraBold",
     color: "#26919B",
     justifyContent: "center",
   },

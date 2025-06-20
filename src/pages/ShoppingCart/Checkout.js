@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
 import GoBack from "../../components/goBack";
 import { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
@@ -35,6 +35,7 @@ function handleAddOrder(cart) {
           <FlatList
             data={cart}
             keyExtractor={(item) => item.id?.toString()}
+            showsVerticalScrollIndicator={false}
             ListFooterComponent={
               <View style={{ alignItems: "center" }}>
                 <View>
@@ -72,8 +73,18 @@ function handleAddOrder(cart) {
             }
             renderItem={({ item }) => (
               <View style={styles.card}>
+                <View style={{alignItems: "center"}}>
+                <Image
+                source={{ uri: item.thumbnail}
+              }
+                style={styles.image}
+                />                  
+                </View>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.brand}>{item.brand}</Text>
+                <Text style={styles.brand}>{item.brand}</Text>                  
+                </View>
+
                 <Text style={styles.year}>2025 - Italia</Text>
                 <Text style={styles.price}>{item.price}</Text>
               </View>
@@ -88,6 +99,7 @@ function handleAddOrder(cart) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFF",
   },
   area: {
     alignItems: "center",
@@ -95,12 +107,15 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    fontFamily: "K2D_700Bold",
+    fontFamily: "K2D_600SemiBold",
+    color: "#797979",   
     marginTop: -60,
+
   },
   card: {
-    backgroundColor: "#fff",
-    marginTop: 20,
+    backgroundColor: "#F5F5F5",
+    borderColor: "#E0E0E0",
+    borderWidth: 0.5,
     marginHorizontal: 20,
     padding: 20,
     borderRadius: 10,
@@ -114,22 +129,27 @@ const styles = StyleSheet.create({
     fontSize: 20,
     maxWidth: 100,
     marginLeft: 10,
-    fontFamily: "K2D_100Thin",
+    fontFamily: "K2D_300Light",
   },
   year: {
     fontSize: 20,
+    fontFamily: "K2D_300Light",
+    color: "#797979",
+    textAlign: "center",
   },
   price: {
     fontSize: 20,
     marginLeft: 30,
-    fontFamily: "K2D_700Bold",
+    fontFamily: "K2D_800ExtraBold",
+    textAlign: "center",
     color: "#26919B",
   },
   textPayment: {
-    fontSize: 20,
     marginBottom: -20,
     marginTop: 20,
-    fontFamily: "K2D_700Bold",
+        fontSize: 20,
+    fontFamily: "K2D_600SemiBold",
+    color: "#797979",  
   },
   picker: {
     height: 50,
@@ -144,13 +164,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F8F8",
   },
   textAddress: {
-    fontSize: 20,
+        fontSize: 20,
+    fontFamily: "K2D_600SemiBold",
+    color: "#797979",  
     marginBottom: -20,
     marginTop: 20,
-    fontFamily: "K2D_700Bold",
   },
   addressArea: {
-    backgroundColor: "#fff",
+        backgroundColor: "#F5F5F5",
+    borderColor: "#E0E0E0",
+    borderWidth: 0.5,
     marginTop: 20,
     marginHorizontal: 20,
     padding: 20,
@@ -159,34 +182,40 @@ const styles = StyleSheet.create({
   address: {
     fontSize: 18,
     maxWidth: 180,
-    fontFamily: "K2D_400Regular",
+    fontFamily: "K2D_600SemiBold",
+    textAlign: "center",
   },
   editAreaAddress: {
-    backgroundColor: "#26919B",
+    backgroundColor: "#FF6666",
     marginTop: 20,
     marginHorizontal: 20,
-    padding: 20,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 15,
   },
   editAddressText: {
     fontSize: 18,
     maxWidth: 180,
-    fontFamily: "K2D_400Regular",
+    fontFamily: "K2D_600SemiBold",
     textAlign: "center",
     color: "#fff",
   },
   btn: {
-    backgroundColor: "#26919B",
+    backgroundColor: "#007F7F",
     marginTop: 20,
+    marginBottom: 40,
     marginHorizontal: 20,
-    padding: 20,
-    borderRadius: 10,
+    width: 300,
+    height: 50,
+    borderRadius: 14,
   },
   textBtn: {
-    fontSize: 18,
-    maxWidth: 180,
-    fontFamily: "K2D_400Regular",
+    fontSize: 22,
+    fontFamily: "K2D_600SemiBold",
     textAlign: "center",
     color: "#fff",
   },
+  image: {
+    width: 100,
+    height: 100,
+  }
 });

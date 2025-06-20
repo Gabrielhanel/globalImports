@@ -1,25 +1,18 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {OrderContext} from '../../contexts/orderContext';
 import { useContext } from 'react';
-//import GoBack from '../../components/goBack';
+import { useNavigation } from '@react-navigation/native';
 export default function MyOrders( {route}) {
 
+  const navigation = useNavigation();
+
   const {order} = useContext(OrderContext);
-//TODO: Questão do botão de voltar 
-{/*
-            onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "User" }],
-            })
-          }
-  */}
-
-
 
  return (
    <View style={{flex: 1}}>
-     {/*<GoBack/>*/}
+             <TouchableOpacity onPress={() => navigation.popToTop()}>
+               <Image source={require('./../../media/components/arrow.png')} style={styles.image}/>
+             </TouchableOpacity>
      <Text style={styles.text}>Meus Pedidos:</Text>
 <FlatList
   data={order}
@@ -84,4 +77,11 @@ const styles = StyleSheet.create({
     padding: 10,
     fontFamily: "K2D_700Bold",
   },
+      image: {
+        width: 40,
+        height: 40,
+        marginTop: 55,
+        marginLeft: 30,
+        marginRight: -10
+    }
 })

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
@@ -11,13 +11,23 @@ import {
 import QuickFilter from "./quickFilter";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../services/Api";
+
 export default function HomeScreen() {
+  const [products, setProducts] = useState([]);
+  const [imageBrands, setImageBrands] = useState([]);
+  const navigation = useNavigation();
+
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
         try {
           const response = await api.get("/products");
-          setProducts(response.data.products);
+          const productsData = response.data.products;
+
+          setProducts(productsData);
+
+          // Agora, filtra e adiciona as imagens das marcas
+          filterBrands(productsData);
         } catch (error) {
           console.error("Erro ao buscar os produtos:", error);
         }
@@ -26,51 +36,76 @@ export default function HomeScreen() {
       fetchData();
     }, [])
   );
+function filterBrands(productsList) {
+    const brands = {
+      "Calvin Klein": require("../../media/home/calvin-klein.png"),
+      "Gucci": require("../../media/home/Gucci.png"),
+      "Chanel": require("../../media/home/chanel.png"),
+      "Dior": require("../../media/home/dior.png"),
+      "Dolce Gabbana": require("../../media/home/dolce-gabbana.png"),
+    };
 
-  const [products, setProducts] = useState([]);
-  const navigation = useNavigation();
+    const productsWithImages = productsList.map((item) => {
+      return {
+        ...item,
+        image: brands[item.brand],
+      };
+    });
+
+    setImageBrands(productsWithImages);
+  }
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../media/logo.png")}
-        style={{
-          width: 110,
-          height: 100,
-          marginBottom: 30,
-          alignSelf: "center",
-        }}
-      />
-
-      <View>
-      <QuickFilter />
-
       <FlatList
-        data={products}
+        data={imageBrands}
         keyExtractor={(item) => item.id?.toString() || item.name}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <View>
+            <Image
+              source={require("../../media/logo.png")}
+              style={{
+                width: 80,
+                height: 70,
+                marginBottom: 30,
+                alignSelf: "center",
+              }}
+            />
+            <QuickFilter />
+          </View>
+        }
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("Product", {
                 product: item,
                 images: item.images,
+                imageBrand: item.image,
               })
             }
           >
             <View style={styles.card}>
-              <View>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={[
                     styles.item,
-                    { color: "#555", fontFamily: "K2D_400Regular" },
+                    {
+                      color: "#000000",
+                      fontFamily: "K2D_500Medium",
+                      maxWidth: 130,
+                    },
                   ]}
                 >
                   {item.title}
                 </Text>
-                <Text style={[styles.item, { fontSize: 14, color: "#aaa" }]}>
-                  {item.year || "2020"}
-                </Text>
+                <Image
+                  source={{ uri: item.thumbnail }}
+                  style={styles.thumbnail}
+                  resizeMode="contain"
+                />
+              </View>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={[
                     styles.item,
@@ -78,25 +113,30 @@ export default function HomeScreen() {
                       fontSize: 18,
                       marginTop: 8,
                       color: "#009999",
-                      fontWeight: "bold",
+                      fontFamily: "K2D_700Bold",
                     },
                   ]}
                 >
                   R$ {item.price}
                 </Text>
-              </View>
-              <View>
-                <Image
-                  source={{ uri: item.thumbnail }}
-                  style={styles.thumbnail}
-                  resizeMode="contain"
-                />
+                <Text
+                  style={[
+                    styles.item,
+                    {
+                      fontSize: 14,
+                      color: "#666666",
+                      fontFamily: "K2D_300Light",
+                    },
+                  ]}
+                >
+                  {item.year || "2020"}
+                </Text>
+                <Image source={item.image} style={styles.img} />
               </View>
             </View>
           </TouchableOpacity>
         )}
       />
-      </View>
     </View>
   );
 }
@@ -118,20 +158,22 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginBottom: 10,
+    marginLeft: 60,
   },
   card: {
     width: 330,
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
     borderRadius: 3,
     padding: 10,
     margin: 10,
     justifyContent: "space-between",
-    // Sombras no iOS
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-    elevation: 6,
+    borderColor: "#BDBDBD",
+    borderWidth: 1,
+  },
+  img: {
+    width: 50,
+    height: 50,
+    marginBottom: 10,
   },
 });
