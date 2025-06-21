@@ -19,7 +19,7 @@ import Filter from "../pages/Search/Filter";
 import Checkout from "../pages/ShoppingCart/Checkout";
 import PurchaseConfirmated from "../pages/ShoppingCart/PurchaseConfirmated"
 import MyOrders from "../pages/Profile/MyOrders";
-
+import OrderProducts from "../pages/Profile/OrderProducts";
 //TODO: colocar os contextos no app.js
 // Contextos
 import CardProductProvider from "../contexts/cardProduct";
@@ -109,6 +109,7 @@ export default function Routes() {
               <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
               <Stack.Screen name="PurchaseConfirmated" component={PurchaseConfirmated} options={{ headerShown: false }} />
               <Stack.Screen name="MyOrders" component={MyOrders} options={{ headerShown: false }} />
+              <Stack.Screen name="OrderProducts" component={OrderProducts} options={{ headerShown: false }} />
             </Stack.Navigator>
           </NavigationContainer>
           </OrderProvider>

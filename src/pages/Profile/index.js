@@ -5,7 +5,7 @@ import Store from './Store';
 export default function User() {
  return (
    <View style={{flex: 1}}>
-    <UserProfile/>
+    <Store/>
    </View>
   );
 }

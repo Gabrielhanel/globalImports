@@ -47,6 +47,17 @@ export default function Favorite() {
     ]);
   };
 
+  const handleRemoveFavorite = (id) => {
+    Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Remover",
+        style: "destructive",
+        onPress: () => removeFavorite(id), // ✅ Só executa depois que o usuário clicar!
+      },
+    ]);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <FlatList
@@ -107,7 +118,7 @@ export default function Favorite() {
                     </View>
 
                     <View>
-                      <TouchableOpacity onPress={() => removeFavorite(item.id)}>
+                      <TouchableOpacity onPress={() => handleRemoveFavorite(item.id)}>
                         <Image
                           source={require("../../media/home/favoriteactive.png")}
                           style={{ width: 30, height: 30 }}

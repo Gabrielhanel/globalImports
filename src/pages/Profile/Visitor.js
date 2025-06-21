@@ -7,10 +7,10 @@ export default function Visitor() {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <View style={styles.imageContainer}>
+        <View>
           <Image
-            source={require("../../media/profile/visitor.png")}
-            style={styles.image}
+          source={require("../../media/profile/visitor.png")}
+          style={styles.image}
           />
         </View>
         <View style={styles.textContainer}>
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 100,
     borderRadius: 100,
   },
   textContainer: {

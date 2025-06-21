@@ -6,12 +6,12 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import GoBack from "../../components/goBack";
-import Modal from 'react-native-modal';
+import Modal from "react-native-modal";
 
 export default function EditProfile() {
   const [users] = useState({
@@ -59,12 +59,12 @@ export default function EditProfile() {
       setImagem(result.assets[0].uri);
     }
   };
-        const save = () => {
-          if (email === '' || phone === '') {
-            Alert.alert('Preencha todos os campos corretamente!');
-          } else {
-                setModalVisible(!isModalVisible);
-          }
+  const save = () => {
+    if (email === "" || phone === "") {
+      Alert.alert("Preencha todos os campos corretamente!");
+    } else {
+      setModalVisible(!isModalVisible);
+    }
   };
 
   return (
@@ -75,7 +75,7 @@ export default function EditProfile() {
         <GoBack />
       </View>
       <Text style={styles.label}>Alterar foto de perfil:</Text>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.containerImage}>
         <View style={styles.backgroundImage}>
           <Image
             source={
@@ -114,18 +114,63 @@ export default function EditProfile() {
       <TouchableOpacity style={styles.button} onPress={save}>
         <Text style={styles.textButton}>Salvar</Text>
       </TouchableOpacity>
-        <Modal isVisible={isModalVisible}>
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                  <View style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', backgroundColor: 'white', width: 200, height: 200, borderRadius: 20}}>
-          <Text style={{fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center'}}>Salvo com sucesso!</Text>
+      <Modal isVisible={isModalVisible}>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              backgroundColor: "white",
+              width: 200,
+              height: 200,
+              borderRadius: 20,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "K2D_700Bold",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Salvo com sucesso!
+            </Text>
 
-          <TouchableOpacity onPress={save} style={{marginTop: 50, backgroundColor: "#26919B", width: 100, height: 40, borderRadius: 10}}>
-            <View style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', marginTop: 10}}>
-            <Text style={{fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Fechar</Text>
-            </View>
-          </TouchableOpacity>
-          <View/>
-        </View>
+            <TouchableOpacity
+              onPress={save}
+              style={{
+                marginTop: 50,
+                backgroundColor: "#26919B",
+                width: 100,
+                height: 40,
+                borderRadius: 10,
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  marginTop: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "K2D_700Bold",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: "white",
+                  }}
+                >
+                  Fechar
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View />
+          </View>
         </View>
       </Modal>
     </ScrollView>
@@ -149,16 +194,17 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#E0E0E0",
+    backgroundColor: "#F5F5F5",
     padding: 10,
     width: 300,
     marginLeft: 35,
     borderRadius: 10,
   },
   image: {
-     width: "100%",
-  height: "100%",
-  borderRadius: 50,
+    width: "100%",
+    height: "100%",
+    borderRadius: 50,
   },
   backgroundImage: {
     borderRadius: 500,
@@ -193,5 +239,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontFamily: "K2D_700Bold",
+  },
+  containerImage: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F5F5F5",
+    borderWidth: 1,
+    borderColor: "#D5D5D5",
+    borderRadius: 10,
+    paddingBottom: 10,
   },
 });

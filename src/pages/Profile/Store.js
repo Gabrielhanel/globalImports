@@ -3,10 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import ButtonEditProfile from "../../components/ButtonEditProfile";
 import ButtonAddress from "../../components/ButtonAddress";
 export default function UserProfile() {
+
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <View style={styles.imageContainer}>
+        <View>
           <Image
             source={require("../../media/profile/visitor.png")}
             style={styles.image}
@@ -28,7 +30,7 @@ export default function UserProfile() {
           </View>
         </TouchableOpacity>
               <View>
-        <TouchableOpacity style={{alignItems: "center",}}>
+        <TouchableOpacity style={{alignItems: "center",}} onPress={() => navigation.navigate("Login")}>
             <View style={[styles.logout, {flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: 160}]}>
                 <Image
                 source={require("../../media/profile/login.png")}
@@ -46,23 +48,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 100, // isso move tudo pra baixo
     paddingLeft: 40,
-    backgroundColor: "#f2f2f2", // só pra contraste
+    backgroundColor: "#fff", // só pra contraste
   },
   row: {
     flexDirection: "row",
     alignItems: "center", // alinha imagem e texto na mesma altura
   },
-  imageContainer: {
+  image: {
     width: 100,
     height: 100,
-    backgroundColor: "rgba(218, 216, 216, 0.61)",
-    borderRadius: 100,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    width: 70,
-    height: 70,
     borderRadius: 100,
   },
   textContainer: {
@@ -91,17 +85,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 300,
     flexDirection: 'row',
-    backgroundColor: '#fff',
+        backgroundColor: "#F5F5F5",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
     borderRadius: 10,
     padding: 10,
     margin: 10,
     justifyContent: 'center',
-    // Sombras no iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 10,
   },
   textCard: {
       maxWidth: 100,
