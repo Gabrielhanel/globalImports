@@ -24,9 +24,22 @@ export default function Favorite() {
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
-        try {
-          const response = await api.get("/products");
-          setProducts(response.data.products);
+      try {
+        const response = await api.get("/dados");
+        const data = response.data;
+
+        const enrichedCars = data.cars.map(car => {
+          const brand = data.brands.find(b => b.id === car.brand); //esperar o pabo colocar a api com o get que contenha o id da table brand 
+          const store = data.stores.find(s => s.id === car.store);
+          const images = data.car_images.filter(img => img.car === car.id);
+          return {
+            ...car,
+            brand,
+            store,
+            images
+          };
+        });
+        setProducts(enrichedCars); 
         } catch (error) {
           console.error("Erro ao buscar os produtos:", error);
         }
@@ -84,7 +97,7 @@ export default function Favorite() {
               <View style={{ justifyContent: "space-between" }}>
                 <View style={{alignItems: "center", justifyContent: "center"}}>
                                 <Image
-                source={{ uri: item.thumbnail }}
+                source={{ uri: item?.thumbnail }}
                 style={{ width: 100, height: 100 }}
                 />                  
                 </View>
@@ -92,11 +105,11 @@ export default function Favorite() {
                 <View style={{ flexDirection: "row" }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", maxWidth: 160, marginRight: 20 }}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.brand}>{item.brand}</Text>
+                    <Text style={styles.title}>{item.brand}</Text>
+                    <Text style={styles.brand}>{item.model}</Text>
                   </View>
                   <View>
-                                  <Text style={styles.price}>R$ {item.price}</Text>
+                                  <Text style={styles.price}> US$ {item.price.toLocaleString("pt-BR")}</Text>
                     </View>            
                 </View>
                 </View>

@@ -17,41 +17,48 @@ export default function HomeScreen() {
   const [imageBrands, setImageBrands] = useState([]);
   const navigation = useNavigation();
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchData = async () => {
-        try {
-          const response = await api.get("/products");
-          const productsData = response.data.products;
+useFocusEffect(
+  useCallback(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/dados");
+        const data = response.data;
 
-          setProducts(productsData);
+        const enrichedCars = data.cars.map(car => {
+          const brand = data.brands.find(b => b.id === car.brand); //esperar o pabo colocar a api com o get que contenha o id da table brand 
+          const store = data.stores.find(s => s.id === car.store);
+          const images = data.car_images.filter(img => img.car === car.id);
+          return {
+            ...car,
+            brand,
+            store,
+            images
+          };
+        });
 
-          // Agora, filtra e adiciona as imagens das marcas
-          filterBrands(productsData);
-        } catch (error) {
-          console.error("Erro ao buscar os produtos:", error);
-        }
-      };
+        setProducts(enrichedCars); 
+        filterBrands(enrichedCars); 
 
-      fetchData();
-    }, [])
-  );
+      } catch (error) {
+        console.error("Erro ao buscar os produtos:", error);
+      }
+    };
+
+    fetchData();
+  }, [])
+);
+
 function filterBrands(productsList) {
     const brands = {
-      "Calvin Klein": require("../../media/home/calvin-klein.png"),
-      "Gucci": require("../../media/home/Gucci.png"),
-      "Chanel": require("../../media/home/chanel.png"),
-      "Dior": require("../../media/home/dior.png"),
-      "Dolce Gabbana": require("../../media/home/dolce-gabbana.png"),
+      "Toyota": require("../../media/home/Ford-Mustang-Symbol 1.png"),
     };
 
     const productsWithImages = productsList.map((item) => {
       return {
         ...item,
-        image: brands[item.brand],
+        image: brands[item.brand?.name]
       };
     });
-
     setImageBrands(productsWithImages);
   }
 
@@ -59,7 +66,7 @@ function filterBrands(productsList) {
     <View style={styles.container}>
       <FlatList
         data={imageBrands}
-        keyExtractor={(item) => item.id?.toString() || item.name}
+        keyExtractor={(item) => `${item.model}-${item.year}`}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>
@@ -80,8 +87,8 @@ function filterBrands(productsList) {
             onPress={() =>
               navigation.navigate("Product", {
                 product: item,
-                images: item.images,
-                imageBrand: item.image,
+                images: item.images, /* Imagens dos produtos */
+                imageBrand: item.brand?.logo, /* Logos das marcas */
               })
             }
           >
@@ -97,10 +104,10 @@ function filterBrands(productsList) {
                     },
                   ]}
                 >
-                  {item.title}
+                  {item.model}
                 </Text>
                 <Image
-                  source={{ uri: item.thumbnail }}
+                  source={{ uri: item.brand?.logo }}
                   style={styles.thumbnail}
                   resizeMode="contain"
                 />
@@ -117,7 +124,7 @@ function filterBrands(productsList) {
                     },
                   ]}
                 >
-                  R$ {item.price}
+                  US$ {item.price.toLocaleString("pt-BR")}
                 </Text>
                 <Text
                   style={[
@@ -129,7 +136,7 @@ function filterBrands(productsList) {
                     },
                   ]}
                 >
-                  {item.year || "2020"}
+                  {item.year || "Sem ano especificado"}
                 </Text>
                 <Image source={item.image} style={styles.img} />
               </View>

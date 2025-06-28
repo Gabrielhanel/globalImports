@@ -21,7 +21,6 @@ export default function QuickFilter() {
               source={require("../../media/home/Gucci.png")}
               style={styles.image}
             />
-            <Text style={styles.text}>GUCCI</Text>
           </TouchableOpacity>
         </View>
 
@@ -31,7 +30,6 @@ export default function QuickFilter() {
               source={require("../../media/home/chanel.png")}
               style={styles.image}
             />
-            <Text style={styles.text}>CHANEL</Text>
           </TouchableOpacity>
         </View>
 
@@ -41,7 +39,6 @@ export default function QuickFilter() {
               source={require("../../media/home/dior.png")}
               style={styles.image}
             />
-            <Text style={styles.text}>DIOR</Text>
           </TouchableOpacity>
         </View>
 
@@ -49,9 +46,8 @@ export default function QuickFilter() {
           <TouchableOpacity style={styles.areaImage}>
             <Image
               source={require("../../media/home/dolce-gabbana.png")}
-              style={styles.image}
+              style={[styles.image, {maxWidth: 100, maxHeight: 100}]}
             />
-            <Text style={styles.text}>DOLCE & GABBANA</Text>
           </TouchableOpacity>
         </View>
 
@@ -59,9 +55,8 @@ export default function QuickFilter() {
           <TouchableOpacity style={styles.areaImage}>
             <Image
               source={require("../../media/home/calvin-klein.png")}
-              style={styles.image}
+              style={[styles.image, {maxWidth: 100, maxHeight: 100}]}
             />
-            <Text style={styles.text}>CALVIN KLEIN</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -71,13 +66,13 @@ export default function QuickFilter() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 20,
   },
   image: {
-    width: 50,
-    height: 50,
+    maxWidth: 50,
+    maxHeight: 50,
     padding: 5,
     overflow: "hidden",
     borderRadius: 65,
@@ -85,6 +80,7 @@ const styles = StyleSheet.create({
   },
   areaImage: {
     alignItems: "center",
+    justifyContent: "center",
     margin: 5,
     borderRadius: 50,
     flexDirection: "row",
@@ -93,11 +89,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 120,
     height: 50,
-  },
-  text: {
-    fontSize: 10,
-    maxWidth: 50,
-    color: "#000000",
-    fontFamily: "K2D_800ExtraBold",
   },
 });

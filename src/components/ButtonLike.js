@@ -23,7 +23,6 @@ export default function ButtonLike({ product }) {
 
 const styles = StyleSheet.create({
   favorite: {
-
     width: 45,
     height: 45,
     marginTop: 55,

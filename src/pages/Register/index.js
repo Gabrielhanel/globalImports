@@ -157,8 +157,9 @@ export default function Register({ navigation }) {
         `Telefone: ${phone}\n` +
         `CPF/CNPJ: ${cpfCnpj}\n` +
         `Senha: ${password}\n` +
-        `Data de nascimento: ${selectedDate}\n` +
-        `Data de Nascimento: ${dataNascimento.toLocaleDateString()}\n`
+        `Data de Nascimento: ${dataNascimento.getFullYear()}/` +
+    `${String(dataNascimento.getMonth() + 1).padStart(2, '0')}/` +
+    `${String(dataNascimento.getDate()).padStart(2, '0')}\n`
     );
   };
 

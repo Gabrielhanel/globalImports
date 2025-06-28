@@ -82,8 +82,8 @@ export default function Home({ route }) {
           <Text style={styles.description}>{product.description}</Text>
         </View>
         <View>
-          <Text style={styles.price}>R${product.price}</Text>
-          <Text style={styles.priceWorld}>US${product.price}</Text>
+          <Text style={styles.price}>R${[product.price].toLocaleString()}</Text>
+          <Text style={styles.priceWorld}>US${[product.price].toLocaleString()}</Text>
         </View>
         <View
           style={{
@@ -104,7 +104,7 @@ export default function Home({ route }) {
               style={{ width: 35, height: 35 }}
             />
             <Text style={styles.textStock}>
-              {product.stock} unidades no Brasil
+              {product.national_quantity} unidades no Brasil
             </Text>
           </View>
           <View
@@ -119,7 +119,7 @@ export default function Home({ route }) {
               style={{ width: 35, height: 35 }}
             />
             <Text style={styles.textStock}>
-              {product.stock} unidades no mundo
+              {product.worldwide_quantity} unidades no mundo
             </Text>
           </View>
         </View>
@@ -136,41 +136,41 @@ export default function Home({ route }) {
             <Text style={styles.specValue}>Ferrari</Text>
 
             <Text style={styles.specTitle}>Modelo</Text>
-            <Text style={styles.specValue}>LaFerrari</Text>
+            <Text style={styles.specValue}>{product.model}</Text>
 
             <Text style={styles.specTitle}>Ano</Text>
-            <Text style={styles.specValue}>2015</Text>
+            <Text style={styles.specValue}>{product.year}</Text>
 
             <Text style={styles.specTitle}>Motorização</Text>
-            <Text style={styles.specValue}>V12 6.3L</Text>
+            <Text style={styles.specValue}>{product.motorization}</Text>
           </View>
 
           <View>
             <Text style={styles.specTitle}>Potência</Text>
-            <Text style={styles.specValue}>963cv</Text>
+            <Text style={styles.specValue}>{product.horse_power}cv</Text>
 
             <Text style={styles.specTitle}>Torque</Text>
-            <Text style={styles.specValue}>71,4kg/fm</Text>
+            <Text style={styles.specValue}>{product.torque}</Text>
 
             <Text style={styles.specTitle}>Tração</Text>
-            <Text style={styles.specValue}>Traseira</Text>
+            <Text style={styles.specValue}>{product.traction}</Text>
 
             <Text style={styles.specTitle}>Propulsão</Text>
-            <Text style={styles.specValue}>Híbrida</Text>
+            <Text style={styles.specValue}>{product.propulsion}</Text>
           </View>
 
           <View style={{ paddingBottom: 50 }}>
             <Text style={styles.specTitle}>Portas</Text>
-            <Text style={styles.specValue}>2</Text>
+            <Text style={styles.specValue}>{product.doors}</Text>
 
             <Text style={styles.specTitle}>Configuração</Text>
-            <Text style={styles.specValue}>Coupé</Text>
+            <Text style={styles.specValue}>{product.car_configuration}</Text>
 
             <Text style={styles.specTitle}>Câmbio</Text>
-            <Text style={styles.specValue}>Automático</Text>
+            <Text style={styles.specValue}>{product.shift}</Text>
 
             <Text style={styles.specTitle}>0–100km/h</Text>
-            <Text style={styles.specValue}>2,5s</Text>
+            <Text style={styles.specValue}>{product.acceleration_to_hundred}s</Text>
           </View>
         </View>
       </View>
@@ -261,6 +261,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
     fontFamily: "K2D_700Bold",
+    maxWidth: 120,
   },
   imageBrand: {
     width: 60,

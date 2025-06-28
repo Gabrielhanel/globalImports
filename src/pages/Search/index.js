@@ -1,22 +1,43 @@
-import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useState, useCallback } from 'react';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import api from '../../services/Api';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { useState, useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import api from "../../services/Api";
 
 export default function SearchScreen() {
   const navigation = useNavigation();
   const [products, setProducts] = useState([]);
   const [imageBrands, setImageBrands] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
         try {
-          const response = await api.get("/products");
-          const productsData = response.data.products;
-          setProducts(productsData);
-          filterBrands(productsData);
+          const response = await api.get("/dados");
+          const data = response.data;
+
+          const enrichedCars = data.cars.map((car) => {
+            const brand = data.brands.find((b) => b.id === car.brand); //esperar o pabo colocar a api com o get que contenha o id da table brand
+            const store = data.stores.find((s) => s.id === car.store);
+            const images = data.car_images.filter((img) => img.car === car.id);
+            return {
+              ...car,
+              brand,
+              store,
+              images,
+            };
+          });
+
+          setProducts(enrichedCars);
+          filterBrands(enrichedCars);
         } catch (error) {
           console.error("Erro ao buscar os produtos:", error);
         }
@@ -28,23 +49,20 @@ export default function SearchScreen() {
 
   function filterBrands(productsList) {
     const brands = {
-      "Calvin Klein": require("../../media/home/calvin-klein.png"),
-      "Gucci": require("../../media/home/Gucci.png"),
-      "Chanel": require("../../media/home/chanel.png"),
-      "Dior": require("../../media/home/dior.png"),
-      "Dolce Gabbana": require("../../media/home/dolce-gabbana.png"),
+      Toyota: require("../../media/home/Ford-Mustang-Symbol 1.png"),
     };
 
-    const productsWithImages = productsList.map((item) => ({
-      ...item,
-      image: brands[item.brand],
-    }));
-
+    const productsWithImages = productsList.map((item) => {
+      return {
+        ...item,
+        image: brands[item.brand?.name],
+      };
+    });
     setImageBrands(productsWithImages);
   }
 
-  const filteredData = imageBrands.filter(item =>
-    item.title.toLowerCase().includes(search.toLowerCase())
+  const filteredData = imageBrands.filter((item) =>
+    item.model.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -56,14 +74,20 @@ export default function SearchScreen() {
           value={search}
           onChangeText={setSearch}
         />
-        <TouchableOpacity style={styles.btnFilter} onPress={() => navigation.navigate("Filter")}>
-          <Image source={require("../../media/filter/filter.png")} style={styles.filter} />
+        <TouchableOpacity
+          style={styles.btnFilter}
+          onPress={() => navigation.navigate("Filter")}
+        >
+          <Image
+            source={require("../../media/filter/filter.png")}
+            style={styles.filter}
+          />
         </TouchableOpacity>
       </View>
 
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => `${item.model}-${item.year}`}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
@@ -77,24 +101,27 @@ export default function SearchScreen() {
             <View style={styles.card}>
               <View style={{ flexDirection: "column" }}>
                 <Text style={[styles.item, { color: "#000", maxWidth: 130 }]}>
-                  {item.title}
+                  {item.model}
                 </Text>
                 <Image
-                  source={{ uri: item.thumbnail }}
+                  source={{ uri: item?.thumbnail }}
                   style={styles.thumbnail}
                   resizeMode="contain"
                 />
               </View>
               <View style={{ flexDirection: "column" }}>
-                <Text style={[styles.item, { fontSize: 18, marginTop: 8, color: "#009999" }]}>
-                  R$ {item.price}
+                <Text
+                  style={[
+                    styles.item,
+                    { fontSize: 18, marginTop: 8, color: "#009999" },
+                  ]}
+                >
+                  US$ {item.price.toLocaleString("pt-BR")}
                 </Text>
                 <Text style={[styles.item, { fontSize: 14, color: "#666" }]}>
                   {item.year || "2020"}
                 </Text>
-                {item.image && (
-                  <Image source={item.image} style={styles.img} />
-                )}
+                {item.image && <Image source={item.image} style={styles.img} />}
               </View>
             </View>
           </TouchableOpacity>
@@ -108,12 +135,12 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: { padding: 16, marginTop: 40, flex: 1 },
   input: {
-    width: '85%',
+    width: "85%",
     height: 40,
     marginRight: 10,
     borderWidth: 1,
     backgroundColor: "#fff",
-    borderColor: '#D0D0D0',
+    borderColor: "#D0D0D0",
     padding: 8,
     borderRadius: 4,
     marginBottom: 16,
@@ -138,9 +165,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: '#BFBFBF',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#BFBFBF",
+    justifyContent: "center",
+    alignItems: "center",
   },
   img: {
     width: 50,
@@ -170,5 +197,4 @@ const styles = StyleSheet.create({
     borderColor: "#BDBDBD",
     borderWidth: 1,
   },
-
 });
