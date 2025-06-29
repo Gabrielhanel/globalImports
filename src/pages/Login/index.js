@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform
 } from "react-native";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login({ navigation }) {
   const [name, setName] = useState("");

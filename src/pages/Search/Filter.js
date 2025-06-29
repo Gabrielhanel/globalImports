@@ -1,52 +1,130 @@
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import OrderBy from "./OrderBy";
-import Category from "./Category";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import GoBack from "../../components/goBack";
-export default function Filter() {
-    //TODO: Transformar o filtro, ou num modal ou num picker
-    //TODO: Ajustar espaço entre botão de voltar e texto
-    return (
-        <ScrollView style={styles.container}>
-            <GoBack/>
-            <View style={{alignItems: "center",}}>
-            <Text style={[styles.text, {marginTop: 70}]}>Ordenar por:</Text>
-            <OrderBy/>
-            </View>
-            <View style={{alignItems: "center"}} >
-                <Text style={[styles.text, {marginTop: 20}]}>Filtrar por:</Text>
-                <Category/>
-            </View>
-            <View style={{alignItems: "center", marginTop: 20}}>
-            <TouchableOpacity style={styles.btn}>
-                <Text style={styles.textBtn}>Filtrar</Text>
-            </TouchableOpacity>
-            </View>
-        </ScrollView>
-    );
+export default function FilterScreen() {
+  const [order, setOrder] = useState(null);
+  const [filter, setFilter] = useState(null);
+  
+  const orderOptions = [
+    { label: "Nome (A-Z)", value: "name_asc" },
+    { label: "Nome (Z-A)", value: "name_desc" },
+    { label: "Preço (maior)", value: "price_desc" },
+    { label: "Preço (menor)", value: "price_asc" },
+  ];
+
+  const filterOptions = [
+    { label: "Todos", value: "all" },
+    { label: "Marca", value: "brand" },
+    { label: "Esportivo", value: "sport" },
+    { label: "SUV", value: "suv" },
+    { label: "Clássico", value: "classic" },
+    { label: "Pick-up", value: "pickup" },
+    { label: "Elétrico", value: "electric" },
+  ];
+
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+    <View style={{flexDirection: "row", alignItems: "center", marginBottom: 20}}>
+      <GoBack />
+    </View>
+      <Text style={styles.sectionTitle}>Ordenar por:</Text>
+      <View style={styles.box}>
+        {orderOptions.map((opt) => (
+          <TouchableOpacity
+            key={opt.value}
+            onPress={() => setOrder(opt.value)}
+            style={[
+              styles.option,
+              order === opt.value && styles.selectedOption,
+            ]}
+          >
+            <Text
+              style={[
+                styles.optionText,
+                order === opt.value && styles.selectedOptionText,
+              ]}
+            >
+              {opt.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <Text style={styles.sectionTitle}>Filtrar por:</Text>
+      <View style={styles.box}>
+        {filterOptions.map((opt) => (
+          <TouchableOpacity
+            key={opt.value}
+            onPress={() => setFilter(opt.value)}
+            style={[
+              styles.option,
+              filter === opt.value && styles.selectedOption,
+            ]}
+          >
+            <Text
+              style={[
+                styles.optionText,
+                filter === opt.value && styles.selectedOptionText,
+              ]}
+            >
+              {opt.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Filtrar</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "white",
-    },
-    text: {
-        fontSize: 20,
-        fontFamily: "K2D_600SemiBold",
-        color: "797979",
-    },
-    btn: {
-        backgroundColor: "#007F7F",
-        width: 150,
-        height: 40,
-        borderRadius: 6,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 50,
-    },
-    textBtn: {
-        fontSize: 17,
-        color: "white",
-        fontFamily: "K2D_700Bold",
-    }
+  container: {
+    padding: 20,
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 10,
+    color: "#333",
+  },
+  box: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    padding: 10,
+    width: "100%",
+  },
+  option: {
+    paddingVertical: 10,
+  },
+  optionText: {
+    fontSize: 16,
+    color: "#666",
+  },
+  selectedOption: {
+    backgroundColor: "#e0f7fa",
+    borderRadius: 5,
+  },
+  selectedOptionText: {
+    color: "#00796b",
+    fontWeight: "bold",
+  },
+  button: {
+    backgroundColor: "#00796b",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginTop: 30,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });

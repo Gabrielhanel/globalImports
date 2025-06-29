@@ -47,7 +47,7 @@ export default function Cart() {
             <View style={{ marginVertical: 20, alignItems: "center" }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={styles.totalText}>Total: </Text>
-                <Text style={styles.totalValue}>R$ {totalValue}</Text>
+                <Text style={styles.totalValue}>R$ {totalValue.toLocaleString('pt-BR')}</Text>
               </View>
               <TouchableOpacity
                 style={styles.btn}
@@ -90,11 +90,11 @@ export default function Cart() {
                         marginRight: 20,
                       }}
                     >
-                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.title}>{item.model}</Text>
                       <Text style={styles.brand}>{item.brand}</Text>
                     </View>
                     <View>
-                      <Text style={styles.price}>R$ {item.price}</Text>
+                      <Text style={styles.price}>US$ {item.price.toLocaleString("pt-BR")}</Text>
                     </View>
                   </View>
                 </View>

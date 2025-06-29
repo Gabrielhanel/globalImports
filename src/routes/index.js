@@ -20,12 +20,14 @@ import Checkout from "../pages/ShoppingCart/Checkout";
 import PurchaseConfirmated from "../pages/ShoppingCart/PurchaseConfirmated"
 import MyOrders from "../pages/Profile/MyOrders";
 import OrderProducts from "../pages/Profile/OrderProducts";
+import ProductRegister from "../pages/Profile/ProductRegister";
 //TODO: colocar os contextos no app.js
 // Contextos
 import CardProductProvider from "../contexts/cardProduct";
 import { FavoritesProvider } from "../contexts/favoriteContext";
 import CartProvider from "../contexts/CartContext";
 import { OrderContext, OrderProvider } from "../contexts/orderContext";
+import AuthProvider, { useAuth } from "../contexts/AuthContext";
 
 // Navegadores
 const Stack = createStackNavigator();
@@ -93,6 +95,7 @@ function TabRoutes() {
 
 export default function Routes() {
   return (
+    <AuthProvider>
     <CartProvider>
       <CardProductProvider>
         <FavoritesProvider>
@@ -110,12 +113,14 @@ export default function Routes() {
               <Stack.Screen name="PurchaseConfirmated" component={PurchaseConfirmated} options={{ headerShown: false }} />
               <Stack.Screen name="MyOrders" component={MyOrders} options={{ headerShown: false }} />
               <Stack.Screen name="OrderProducts" component={OrderProducts} options={{ headerShown: false }} />
+              <Stack.Screen name="ProductRegister" component={ProductRegister} options={{ headerShown: false }} />
             </Stack.Navigator>
           </NavigationContainer>
           </OrderProvider>
         </FavoritesProvider>
       </CardProductProvider>
     </CartProvider>
+    </AuthProvider>
   );
 }
 

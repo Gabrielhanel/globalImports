@@ -9,8 +9,8 @@ function CardProductProvider({children}) {
       useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/products");
-        setProducts(response.data.products);
+        const response = await api.get("/dados");
+        setProducts(response.data);
       } catch (error) {
         console.error("Erro ao buscar os produtos:", error);
       }

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function GoBack() {
  const navigation = useNavigation();
  return (
-    <View style={styles.container}>
+    <View>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={require('./../media/components/arrow.png')} style={styles.image}/>
         </TouchableOpacity>
@@ -12,9 +12,6 @@ export default function GoBack() {
   );
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     image: {
         width: 40,
         height: 40,

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import ButtonEditProfile from "../../components/ButtonEditProfile";
 import ButtonAddress from "../../components/ButtonAddress";
+import ProductRegister from "./ProductRegister";
 export default function UserProfile() {
 
   const navigation = useNavigation();
@@ -20,7 +21,7 @@ export default function UserProfile() {
         </View>
       </View>
       <ButtonAddress/>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ProductRegister")}>
           <View style={[styles.card, { flexDirection: "row" }]}>
             <Image
             source={require("../../media/profile/store.png")}

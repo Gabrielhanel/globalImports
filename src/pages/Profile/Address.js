@@ -5,98 +5,96 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoBack from "../../components/goBack";
 import { useNavigation } from "@react-navigation/native";
+import api from "../../services/Api"
+
 export default function Address() {
   const navigation = useNavigation();
 
-  const fetchAddress = async () => {
-    try {
-      const response = await api.get("/addresses");
-      const data = response.data;
+  // Estados individuais
+  const [cep, setCep] = useState("");
+  const [city, setCity] = useState("");
+  const [street, setStreet] = useState("");
+  const [numberHouse, setNumberHouse] = useState("");
+  const [complement, setComplement] = useState("");
+  const [reference, setReference] = useState("");
+  const [uf, setUf] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
 
-       setAddress(data);
-      setCep(data.postal_code);
-      setCity(data.city);
-      setStreet(data.street);
-      setNumberHouse(data.number);
-      setComplement(data.complement);
-      setReference(data.reference_point);
-      setUf(data.state);
-      setNeighborhood(data.neighborhood);
-      
-      return response.data;
-    } catch (error) {
-      console.error("Erro:", error);
-    }
-    fetchAddress();
-  };
-const saveAddress = async () => {
-  try {
-    const payload = {
-      postal_code: cep,
-      city,
-      street,
-      number: numberHouse,
-      complement,
-      reference_point: reference,
-      state: uf,
-      neighborhood,
+  // Carrega dados ao abrir a tela
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const response = await api.get("/user/address");
+        const data = response.data;
+
+        setCep(data.postal_code || "");
+        setCity(data.city || "");
+        setStreet(data.street || "");
+        setNumberHouse(data.number || "");
+        setComplement(data.complement || "");
+        setReference(data.reference_point || "");
+        setUf(data.state || "");
+        setNeighborhood(data.neighborhood || "");
+      } catch (error) {
+        console.error("Erro ao buscar endereço:", error);
+        alert("Erro ao carregar o endereço.");
+      }
     };
 
-    await api.put("/user/address", payload);
-    alert("Endereço salvo com sucesso!");
-  } catch (error) {
-    console.error("Erro ao salvar endereço:", error);
-    alert("Erro ao salvar endereço.");
-  }
-};
+    fetchAddress();
+  }, []);
 
-  const [address, setAddress] = useState({
-    postal_code: `${postal_code}`,
-    city: "Tupanci do Sul",
-    street: "Rua ricas tupanci",
-    number: "69",
-    complement: "Casa",
-    reference_point: "Casa do Ricas",
-    state: "RS",
-    neighborhood: "Centro",
-  });
-  const [cep, setCep] = useState(address.postal_code);
-  const [city, setCity] = useState(address.city);
-  const [street, setStreet] = useState(address.street);
-  const [numberHouse, setNumberHouse] = useState(address.number);
-  const [complement, setComplement] = useState(address.complement);
-  const [reference, setReference] = useState(address.reference_point);
-  const [uf, setUf] = useState(address.state);
-  const [neighborhood, setNeighborhood] = useState(address.neighborhood);
+  // Salva o endereço
+  const saveAddress = async () => {
+    try {
+      const payload = {
+        postal_code: cep,
+        city,
+        street,
+        number: numberHouse,
+        complement,
+        reference_point: reference,
+        state: uf,
+        neighborhood,
+      };
+
+      await api.put("/user/address", payload);
+      alert("Endereço salvo com sucesso!");
+    } catch (error) {
+      console.error("Erro ao salvar endereço:", error);
+      alert("Erro ao salvar endereço.");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <View>
-        <GoBack />
-      </View>
+      <GoBack />
 
-      <View style={{ justifyContent: "center", padding: 20 }}>
+      <View style={{ paddingHorizontal: 20, paddingVertical: 20}}>
         <Text style={styles.title}>Defina seu endereço</Text>
-        <Text style={styles.text}>CEP: </Text>
+
+        <Text style={styles.text}>CEP:</Text>
         <TextInput
           placeholder="Cep"
           value={cep}
           onChangeText={setCep}
           style={styles.inputMaior}
         />
+
         <View style={{ flexDirection: "row" }}>
           <View>
-            <Text style={styles.text}>Cidade: </Text>
+            <Text style={styles.text}>Cidade:</Text>
             <TextInput
               placeholder="Cidade"
               value={city}
               onChangeText={setCity}
               style={styles.inputMenor}
             />
-            <Text style={styles.text}>Estado</Text>
+
+            <Text style={styles.text}>Estado:</Text>
             <TextInput
               placeholder="Estado"
               value={uf}
@@ -104,6 +102,7 @@ const saveAddress = async () => {
               style={styles.inputMenor}
             />
           </View>
+
           <View>
             <Text style={styles.text}>Bairro:</Text>
             <TextInput
@@ -112,15 +111,17 @@ const saveAddress = async () => {
               onChangeText={setNeighborhood}
               style={styles.inputMenor}
             />
+
             <Text style={styles.text}>Número:</Text>
             <TextInput
-              placeholder="Numero"
+              placeholder="Número"
               value={numberHouse}
               onChangeText={setNumberHouse}
               style={styles.inputMenor}
             />
           </View>
         </View>
+
         <Text style={styles.text}>Rua:</Text>
         <TextInput
           placeholder="Rua"
@@ -128,6 +129,7 @@ const saveAddress = async () => {
           onChangeText={setStreet}
           style={styles.inputMaior}
         />
+
         <Text style={styles.text}>Complemento:</Text>
         <TextInput
           placeholder="Complemento"
@@ -135,6 +137,7 @@ const saveAddress = async () => {
           onChangeText={setComplement}
           style={styles.inputMaior}
         />
+
         <Text style={styles.text}>Referência:</Text>
         <TextInput
           placeholder="Referência"
@@ -142,13 +145,15 @@ const saveAddress = async () => {
           onChangeText={setReference}
           style={styles.inputMaior}
         />
+
+        <TouchableOpacity style={styles.btn} onPress={saveAddress}>
+          <Text style={styles.textBtn}>Salvar</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.textBtn}>Salvar</Text>
-      </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -157,7 +162,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginLeft: 50,
-    marginTop: 90,
     color: "#26919B",
     fontFamily: "K2D_700Bold",
   },
@@ -203,83 +207,3 @@ const styles = StyleSheet.create({
     fontFamily: "K2D_700Bold",
   },
 });
-
-
-/*
-import { useEffect } from "react";
-
-export default function Address() {
-  const navigation = useNavigation();
-
-  const [cep, setCep] = useState("");
-  const [city, setCity] = useState("");
-  const [street, setStreet] = useState("");
-  const [numberHouse, setNumberHouse] = useState("");
-  const [complement, setComplement] = useState("");
-  const [reference, setReference] = useState("");
-  const [uf, setUf] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-
-  useEffect(() => {
-    const loadAddress = async () => {
-      try {
-        const response = await api.get("/user/address");
-        const data = response.data;
-
-        setCep(data.postal_code || "");
-        setCity(data.city || "");
-        setStreet(data.street || "");
-        setNumberHouse(data.number || "");
-        setComplement(data.complement || "");
-        setReference(data.reference_point || "");
-        setUf(data.state || "");
-        setNeighborhood(data.neighborhood || "");
-      } catch (error) {
-        console.error("Erro ao buscar endereço:", error);
-      }
-    };
-
-    loadAddress();
-  }, []);
-
-  const saveAddress = async () => {
-    try {
-      const payload = {
-        postal_code: cep,
-        city,
-        street,
-        number: numberHouse,
-        complement,
-        reference_point: reference,
-        state: uf,
-        neighborhood
-      };
-
-      await api.put("/user/address", payload);
-      alert("Endereço salvo com sucesso!");
-    } catch (error) {
-      console.error("Erro ao salvar endereço:", error);
-      alert("Erro ao salvar endereço");
-    }
-  };
-
-  return (
-    <View style={styles.container}>
-      <View>
-        <GoBack />
-      </View>
-
-      <View style={{ justifyContent: "center", padding: 20 }}>
-        <Text style={styles.title}>Defina seu endereço</Text>
-
-        /*{ Seus TextInputs permanecem iguais }
-        { Só adiciona o onPress no botão }
-      </View>
-
-      <TouchableOpacity style={styles.btn} onPress={saveAddress}>
-        <Text style={styles.textBtn}>Salvar</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-*/
