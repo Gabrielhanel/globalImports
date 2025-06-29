@@ -14,6 +14,7 @@ import OnlyLoggedUsers from "../Profile/OnlyLoggedUsers";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Cart() {
+  
   const { user } = useAuth();
   const navigation = useNavigation();
   const { cart, removeFromCart } = useContext(CartContext);

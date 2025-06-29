@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
 } from "react-native";
 import GoBack from "../../components/goBack";
 
@@ -27,30 +30,49 @@ export default function ProductRegister() {
   const [shift, setShift] = useState("");
   const [accelerationToHundred, setAccelerationToHundred] = useState("");
 
-  const handleSave = () => {
-    // Aqui você pode enviar os dados para API, salvar localmente, etc
-    const newProduct = {
-      brand,
-      title,
-      description,
-      price: parseFloat(price),
-      model,
-      year,
-      motorization,
-      horse_power: horsePower,
-      torque,
-      traction,
-      propulsion,
-      doors,
-      car_configuration: carConfiguration,
-      shift,
-      acceleration_to_hundred: accelerationToHundred,
-    };
-    console.log("Produto criado:", newProduct);
-    alert("Produto salvo (exemplo)!");
+const handleSave = () => {
+  const product = {
+    brand,
+    title,
+    description,
+    price: price.trim(),
+    model,
+    year,
+    motorization,
+    horsePower,
+    torque,
+    traction,
+    propulsion,
+    doors,
+    carConfiguration,
+    shift,
+    accelerationToHundred,
   };
 
+  const hasInvalidFields = Object.values(product).some(
+    (value) => value === "" || value === null || value === undefined || value.trim?.() === ""
+  );
+
+  const isPriceValid = !Number.isNaN(parseFloat(price)) && parseFloat(price) > 0;
+
+  if (hasInvalidFields || !isPriceValid) {
+    Alert.alert("Error", "Please fill all fields correctly!");
+    return;
+  }
+
+  const finalProduct = {
+    ...product,
+    price: parseFloat(price),
+  };
+
+  Alert.alert("Success", "Product saved successfully!");
+};
+
   return (
+        <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1,}}
+    >
     <ScrollView style={styles.container}>
     <View style={{marginBottom: 30}}>
       <GoBack />
@@ -187,6 +209,7 @@ export default function ProductRegister() {
         <Text style={styles.btnText}>Salvar Produto</Text>
       </TouchableOpacity>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -194,7 +217,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 30,
     backgroundColor: "#fff",
   },
   title: {
@@ -228,7 +250,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 80,
   },
   btnText: {
     color: "#fff",

@@ -22,6 +22,8 @@ import MyOrders from "../pages/Profile/MyOrders";
 import OrderProducts from "../pages/Profile/OrderProducts";
 import ProductRegister from "../pages/Profile/ProductRegister";
 import OnlyLoggedUsers from "../pages/Profile/OnlyLoggedUsers";
+import OnlyLoggedAction from "../pages/Profile/OnlyLoggedAction";
+import ProductFiltered from "../pages/Search/ProductFiltered";
 //TODO: colocar os contextos no app.js
 // Contextos
 import CardProductProvider from "../contexts/cardProduct";
@@ -116,6 +118,8 @@ export default function Routes() {
               <Stack.Screen name="OrderProducts" component={OrderProducts} options={{ headerShown: false }} />
               <Stack.Screen name="ProductRegister" component={ProductRegister} options={{ headerShown: false }} />
               <Stack.Screen name="OnlyLoggedUsers" component={OnlyLoggedUsers} options={{ headerShown: false }} />
+              <Stack.Screen name="OnlyLoggedAction" component={OnlyLoggedAction} options={{ headerShown: false }} />
+              <Stack.Screen name="ProductFiltered" component={ProductFiltered} options={{ headerShown: false }} />
             </Stack.Navigator>
           </NavigationContainer>
           </OrderProvider>

@@ -18,7 +18,7 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/Gucci.png")}
+              source={require("../../media/home/mustang-logo.png")}
               style={styles.image}
             />
           </TouchableOpacity>
@@ -27,7 +27,7 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/chanel.png")}
+              source={require("../../media/home/Koenigsegg-logo.png")}
               style={styles.image}
             />
           </TouchableOpacity>
@@ -36,7 +36,7 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/dior.png")}
+              source={require("../../media/home/tesla-logo.png")}
               style={styles.image}
             />
           </TouchableOpacity>
@@ -45,16 +45,7 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/dolce-gabbana.png")}
-              style={[styles.image, {maxWidth: 100, maxHeight: 100}]}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <TouchableOpacity style={styles.areaImage}>
-            <Image
-              source={require("../../media/home/calvin-klein.png")}
+              source={require("../../media/home/logo-ferrari.png")}
               style={[styles.image, {maxWidth: 100, maxHeight: 100}]}
             />
           </TouchableOpacity>
@@ -71,11 +62,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   image: {
-    maxWidth: 50,
+    maxWidth: 60,
     maxHeight: 50,
     padding: 5,
     overflow: "hidden",
-    borderRadius: 65,
     margin: 5,
   },
   areaImage: {

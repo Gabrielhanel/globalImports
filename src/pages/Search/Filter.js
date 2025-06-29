@@ -1,10 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import GoBack from "../../components/goBack";
+import { useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import api from "../../services/Api";
+
 export default function FilterScreen() {
   const [order, setOrder] = useState(null);
   const [filter, setFilter] = useState(null);
-  
+  const [products, setProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState(products);
+    const [imageBrands, setImageBrands] = useState([]);
+
+  const navigation = useNavigation();
+
+useFocusEffect(
+  useCallback(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/dados");
+        const data = response.data;
+
+        const enrichedCars = data.cars.map(car => {
+          const brand = data.brands.find(b => b.id === car.brand); //esperar o pabo colocar a api com o get que contenha o id da table brand 
+          const store = data.stores.find(s => s.id === car.store);
+          const images = data.car_images.filter(img => img.car === car.id);
+          return {
+            ...car,
+            brand,
+            store,
+            images
+          };
+        });
+
+        setProducts(enrichedCars); 
+        filterBrands(enrichedCars); 
+
+      } catch (error) {
+        console.error("Erro ao buscar os produtos:", error);
+      }
+    };
+
+    fetchData();
+  }, [])
+);
+
+function filterBrands(productsList) {
+    const brands = {
+      "Mustang": require("../../media/home/mustang-logo.png"),
+    };
+
+    const productsWithImages = productsList.map((item) => {
+      return {
+        ...item,
+        image: brands[item.brand?.name]
+      };
+    });
+    setImageBrands(productsWithImages);
+  }
   const orderOptions = [
     { label: "Nome (A-Z)", value: "name_asc" },
     { label: "Nome (Z-A)", value: "name_desc" },
@@ -14,19 +67,53 @@ export default function FilterScreen() {
 
   const filterOptions = [
     { label: "Todos", value: "all" },
-    { label: "Marca", value: "brand" },
+//    { label: "Marca", value: "brand" },
     { label: "Esportivo", value: "sport" },
     { label: "SUV", value: "suv" },
     { label: "Clássico", value: "classic" },
     { label: "Pick-up", value: "pickup" },
     { label: "Elétrico", value: "electric" },
   ];
+const applyFilter = () => {
+  let filtered = [...products];
 
+  // 🔹 Aplicar filtro de categoria
+  if (filter && filter !== 'all') {
+    if (filter === 'brand') {
+      filtered = filtered.filter(p => p.brand === 'SUA_CONDICAO_AQUI'); 
+      // ou crie uma lógica para escolher marca específica
+    } else if (filter === 'sport') {
+      filtered = filtered.filter(p => p.category === 'SPORTS');
+    } else if (filter === 'suv') {
+      filtered = filtered.filter(p => p.car_type === 'SUV');
+    } else if (filter === 'classic') {
+      filtered = filtered.filter(p => p.category === 'CLASSIC');
+    } else if (filter === 'pickup') {
+      filtered = filtered.filter(p => p.car_type === 'PICKUP');
+    } else if (filter === 'electric') {
+      filtered = filtered.filter(p => p.propulsion === 'ELECTRIC');
+    }
+  }
+
+  // 🔹 Aplicar ordenação
+  if (order === 'name_asc') {
+    filtered.sort((a, b) => a.model.localeCompare(b.model));
+  } else if (order === 'name_desc') {
+    filtered.sort((a, b) => b.model.localeCompare(a.model));
+  } else if (order === 'price_asc') {
+    filtered.sort((a, b) => a.price - b.price);
+  } else if (order === 'price_desc') {
+    filtered.sort((a, b) => b.price - a.price);
+  }
+
+  setDisplayedProducts(filtered);
+  return filtered;
+};
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    <View style={{flexDirection: "row", alignItems: "center", marginBottom: 20}}>
       <GoBack />
-    </View>
+      <View style={{ alignItems: "center" }}>
+
       <Text style={styles.sectionTitle}>Ordenar por:</Text>
       <View style={styles.box}>
         {orderOptions.map((opt) => (
@@ -73,9 +160,16 @@ export default function FilterScreen() {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Filtrar</Text>
-      </TouchableOpacity>
+<TouchableOpacity 
+  style={styles.button}
+  onPress={() => {
+    const filtered = applyFilter();
+    navigation.navigate('ProductFiltered', { filteredProducts: filtered });
+  }}
+>
+  <Text style={styles.buttonText}>Filtrar</Text>
+</TouchableOpacity>
+            </View>
     </ScrollView>
   );
 }
@@ -83,7 +177,6 @@ export default function FilterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    alignItems: "center",
     backgroundColor: "#fff",
   },
   sectionTitle: {

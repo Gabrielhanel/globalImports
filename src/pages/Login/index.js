@@ -22,7 +22,7 @@ export default function Login({ navigation }) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
-
+  
   const enviarDados = async () => {
     if (emailOrNumber === "" || password === "") {
       alert("Preencha todos os campos!");

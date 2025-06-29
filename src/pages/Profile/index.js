@@ -9,15 +9,16 @@ export default function User() {
 
   return (
     <View style={{ flex: 1 }}>
-      {user ? (
-        user.userType === 'store' ? (
+      {/*user ? (
+        user.userType === 'store' || user.userType === 'admin' ? (
           <Store />
         ) : (
           <UserProfile />
         )
       ) : (
         <Visitor />
-      )}
+      )*/}
+      <Store />
     </View>
   );
 }

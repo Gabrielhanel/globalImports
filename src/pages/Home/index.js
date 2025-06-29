@@ -50,7 +50,7 @@ useFocusEffect(
 
 function filterBrands(productsList) {
     const brands = {
-      "Toyota": require("../../media/home/Ford-Mustang-Symbol 1.png"),
+      "Mustang": require("../../media/home/mustang-logo.png"),
     };
 
     const productsWithImages = productsList.map((item) => {

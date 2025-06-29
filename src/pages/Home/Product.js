@@ -13,14 +13,21 @@ import ButtonLike from "../../components/ButtonLike";
 import { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import Modal from 'react-native-modal';
-
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 export default function Home({ route }) {
   const { addProduct } = useContext(CartContext);
   const [isModalVisible, setModalVisible] = useState(false);
+  const { user } = useAuth();
+  const navigation = useNavigation();
 
   function handleAddProduct(product) {
-    addProduct(product);
-    setModalVisible(true);
+if (!user || (user.userType !== "user" && user.userType !== "admin")) {
+  navigation.navigate("OnlyLoggedAction");
+} 
+else {
+addProduct(product);
+setModalVisible(true);}
   }
 
   const { product, images, imageBrand } = route.params;

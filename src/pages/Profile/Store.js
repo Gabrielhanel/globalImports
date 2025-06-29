@@ -2,9 +2,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import ButtonEditProfile from "../../components/ButtonEditProfile";
 import ButtonAddress from "../../components/ButtonAddress";
-import ProductRegister from "./ProductRegister";
+import { useAuth } from "../../contexts/AuthContext";
 export default function UserProfile() {
 
+  const { logout } = useAuth();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -31,13 +32,22 @@ export default function UserProfile() {
           </View>
         </TouchableOpacity>
               <View>
-        <TouchableOpacity style={{alignItems: "center",}} onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity
+  style={{ alignItems: "center" }}
+  onPress={() => {
+    logout(); // limpa o contexto
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
+  }}
+>
             <View style={[styles.logout, {flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: 160}]}>
                 <Image
                 source={require("../../media/profile/login.png")}
                 style={{width: 30, height: 30}}
                 />
-                <Text style={styles.textLogout}>Sair da conta</Text>
+                <Text style={styles.textLogout} >Sair da conta</Text>
             </View>
         </TouchableOpacity>
       </View>

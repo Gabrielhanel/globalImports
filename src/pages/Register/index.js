@@ -67,7 +67,19 @@ function formatarCpfCnpj(value) {
   }
   return numbers;
 }
+function mascararCelularDinamico(text) {
+  const limpo = text.replace(/\D/g, '').slice(0, 11); // máximo 11 dígitos
 
+  if (limpo.length <= 2) {
+    return limpo.replace(/(\d{0,2})/, '($1');
+  } else if (limpo.length <= 6) {
+    return limpo.replace(/(\d{2})(\d{0,4})/, '($1) $2');
+  } else if (limpo.length <= 10) {
+    return limpo.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+  } else {
+    return limpo.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  }
+}
 export default function Register({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -93,6 +105,13 @@ export default function Register({ navigation }) {
       Alert.alert("Erro", "Preencha todos os campos corretamente!");
       return;
     }
+
+const limpo = phone.replace(/\D/g, '');
+if (!/^(\d{2})9\d{8}$/.test(limpo)) {
+  Alert.alert("Erro", "Telefone inválido!");
+  return;
+}
+
 
     if (!isValidEmail(email)) {
       Alert.alert("Erro", "Email inválido!");
@@ -186,7 +205,9 @@ export default function Register({ navigation }) {
             </View>
 
             <Text style={styles.textoNome}>Número de Telefone:</Text>
-            <TextInput style={styles.input} placeholder="Digite seu telefone" onChangeText={setPhone} keyboardType="phone-pad" />
+            <TextInput style={styles.input} placeholder="Digite seu telefone"    onChangeText={(text) => setPhone(mascararCelularDinamico(text))}keyboardType="phone-pad"
+  maxLength={15}
+  />
 
             <Text style={styles.textoNome}>CPF ou CNPJ:</Text>
             <TextInput
