@@ -12,10 +12,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
-//bugs para correção:
-// 1. A data de nascimento precisa ser validada para não permitir datas futuras,
-// questão do cadastro da imagem da foto de perfil, verificar se sera obrigatório ou não
+import { register } from "../../services/AuthService";
 
 // Funções de validação
 const isValidEmail = (email) => {
@@ -25,7 +22,6 @@ const isValidEmail = (email) => {
 
 function validarCPF(cpf) {
   cpf = cpf.replace(/[^\d]+/g, "");
-
   if (cpf.length !== 11 || /^(.)\1{10}$/.test(cpf)) return false;
 
   let soma = 0;
@@ -41,28 +37,20 @@ function validarCPF(cpf) {
 
 function validarCNPJ(cnpj) {
   cnpj = cnpj.replace(/[^\d]+/g, "");
-
   if (cnpj.length !== 14 || /^(.)\1{13}$/.test(cnpj)) return false;
 
-  let multiplicador1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  let multiplicador2 = [6].concat(multiplicador1);
+  let mult1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  let mult2 = [6].concat(mult1);
 
-  let soma = cnpj
-    .split("")
-    .slice(0, 12)
-    .reduce((acc, val, i) => acc + parseInt(val) * multiplicador1[i], 0);
-  let digito1 = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-  if (parseInt(cnpj[12]) !== digito1) return false;
+  let soma = cnpj.split("").slice(0, 12).reduce((acc, val, i) => acc + parseInt(val) * mult1[i], 0);
+  let dig1 = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+  if (parseInt(cnpj[12]) !== dig1) return false;
 
-  soma = cnpj
-    .split("")
-    .slice(0, 13)
-    .reduce((acc, val, i) => acc + parseInt(val) * multiplicador2[i], 0);
-  let digito2 = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-  return parseInt(cnpj[13]) === digito2;
+  soma = cnpj.split("").slice(0, 13).reduce((acc, val, i) => acc + parseInt(val) * mult2[i], 0);
+  let dig2 = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+  return parseInt(cnpj[13]) === dig2;
 }
 
-// Máscara para CPF e CNPJ
 function formatarCpfCnpj(value) {
   let numbers = value.replace(/\D/g, "");
   if (numbers.length <= 11) {
@@ -90,194 +78,115 @@ export default function Register({ navigation }) {
   const [password, setPassword] = useState("");
   const [dataNascimento, setDataNascimento] = useState(null);
   const [show, setShow] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [loading, setLoading] = useState(false); 
+
 
   const onDateChange = (event, selectedDate) => {
-    setShow(false); // Fecha o DateTimePicker assim que a data é escolhida
+    setShow(false);
     if (selectedDate) {
-      setDataNascimento(selectedDate); // Atualiza a data escolhida
+      setDataNascimento(selectedDate);
     }
   };
 
-  const enviarDados = () => {
-    const documento = cpfCnpj.replace(/[^\d]+/g, "");
-
-    if (documento.length !== 11 && documento.length !== 14) {
-      Alert.alert("CPF ou CNPJ inválido!");
+  const enviarDados = async () => {
+    if (!firstName || !lastName || !email || !gender || !phone || !cpfCnpj || !password || !dataNascimento) {
+      Alert.alert("Erro", "Preencha todos os campos corretamente!");
       return;
     }
+
     if (!isValidEmail(email)) {
-      Alert.alert("Email inválido!");
-    }
-
-    if (documento.length === 11 && !validarCPF(documento)) {
-      Alert.alert("CPF inválido!");
+      Alert.alert("Erro", "Email inválido!");
       return;
     }
 
-    if (documento.length === 14 && !validarCNPJ(documento)) {
-      Alert.alert("CNPJ inválido!");
+    const documento = cpfCnpj.replace(/[^\d]+/g, "");
+    if (documento.length === 11) {
+      if (!validarCPF(documento)) {
+        Alert.alert("Erro", "CPF inválido!");
+        return;
+      }
+    } else if (documento.length === 14) {
+      if (!validarCNPJ(documento)) {
+        Alert.alert("Erro", "CNPJ inválido!");
+        return;
+      }
+    } else {
+      Alert.alert("Erro", "CPF ou CNPJ incompleto!");
       return;
     }
 
     if (dataNascimento > new Date()) {
-      Alert.alert("Data de nascimento inválida!");
+      Alert.alert("Erro", "Data de nascimento inválida!");
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert("A senha deve ter pelo menos 6 caracteres!");
-      return;
-    }
-    const date = new Date();
-    if (selectedDate > date) {
-      Alert.alert("Data de nascimento inválida!");
+      Alert.alert("Erro", "A senha deve ter pelo menos 6 caracteres!");
       return;
     }
 
-    if (
-      !firstName ||
-      !lastName ||
-      !email | !gender ||
-      !phone ||
-      !cpfCnpj ||
-      !password ||
-      !dataNascimento ||
-      !isValidEmail
-    ) {
-      Alert.alert("Preencha todos os campos corretamente!");
-      return;
+    try {
+      setLoading(true);
+      let user = { firstName, lastName, email, gender, phone, cpfCnpj, password, dataNascimento };
+      const response = await register(user);
+            if (response.error) {
+        Alert.alert("Erro", response.error);
+        return;
+      }
+      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+      navigation.navigate("Login");
+    } catch (error) {
+      Alert.alert("Erro inesperado", error.message);
+    } finally {
+      setLoading(false);
     }
-
-    alert(
-      "Dados enviados com sucesso!! \n\n" +
-        `Nome: ${firstName} ${lastName}\n` +
-        `Email: ${email}\n` +
-        `Gênero: ${gender}\n` +
-        `Telefone: ${phone}\n` +
-        `CPF/CNPJ: ${cpfCnpj}\n` +
-        `Senha: ${password}\n` +
-        `Data de Nascimento: ${dataNascimento.getFullYear()}/` +
-    `${String(dataNascimento.getMonth() + 1).padStart(2, '0')}/` +
-    `${String(dataNascimento.getDate()).padStart(2, '0')}\n`
-    );
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.container}>
-          <Image
-            source={require("../../media/logo.png")}
-            style={{ width: 100, height: 80, marginTop: 35 }}
-          />
-
-          <Text style={styles.slogan}> Informe-nos seus dados </Text>
+          <Image source={require("../../media/logo.png")} style={{ width: 100, height: 80, marginTop: 35 }} />
+          <Text style={styles.slogan}>Informe-nos seus dados</Text>
 
           <View style={styles.areaFormulario}>
             <Text style={styles.textoNome}>Nome:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu nome"
-              onChangeText={setFirstName}
-            />
+            <TextInput style={styles.input} placeholder="Digite seu nome" onChangeText={setFirstName} />
 
             <Text style={styles.textoNome}>Sobrenome:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu sobrenome"
-              onChangeText={setLastName}
-            />
+            <TextInput style={styles.input} placeholder="Digite seu sobrenome" onChangeText={setLastName} />
 
             <Text style={styles.textoNome}>Data de nascimento:</Text>
             <TouchableOpacity onPress={() => setShow(true)} style={styles.input}>
-          <Text>{dataNascimento ? dataNascimento.toLocaleDateString('pt-BR') : 'Selecione sua data'}</Text>
-</TouchableOpacity>
-
-{show && (
-  <DateTimePicker
-    value={dataNascimento ? dataNascimento : new Date()} // Não faz reset para a data atual a menos que não tenha data selecionada
-    mode="date"
-    display="default"
-    onChange={onDateChange} // Fecha o DateTimePicker ao selecionar a data
-  />
-)}
+              <Text>{dataNascimento ? dataNascimento.toLocaleDateString('pt-BR') : 'Selecione sua data'}</Text>
+            </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                value={dataNascimento || new Date()}
+                mode="date"
+                display="default"
+                onChange={onDateChange}
+              />
+            )}
 
             <Text style={styles.textoNome}>E-mail:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu e-mail"
-              onChangeText={setEmail}
-              keyboardType="email-address"
-            />
+            <TextInput style={styles.input} placeholder="Digite seu e-mail" onChangeText={setEmail} keyboardType="email-address" />
 
             <Text style={styles.textoNome}>Gênero:</Text>
             <View style={{ flexDirection: "row", marginBottom: 20 }}>
-              <TouchableOpacity
-                style={[
-                  styles.genderOption,
-                  gender === "Masculino" && styles.selectedGender,
-                ]}
-                onPress={() => setGender("Masculino")}
-              >
-                <Text
-                  style={
-                    gender === "Masculino"
-                      ? styles.selectedText
-                      : styles.unselectedText
-                  }
+              {["Masculino", "Feminino", "Outro"].map((g) => (
+                <TouchableOpacity
+                  key={g}
+                  style={[styles.genderOption, gender === g && styles.selectedGender]}
+                  onPress={() => setGender(g)}
                 >
-                  Masculino
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.genderOption,
-                  gender === "Feminino" && styles.selectedGender,
-                ]}
-                onPress={() => setGender("Feminino")}
-              >
-                <Text
-                  style={
-                    gender === "Feminino"
-                      ? styles.selectedText
-                      : styles.unselectedText
-                  }
-                >
-                  Feminino
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.genderOption,
-                  gender === "Outro" && styles.selectedGender,
-                ]}
-                onPress={() => setGender("Outro")}
-              >
-                <Text
-                  style={
-                    gender === "Outro"
-                      ? styles.selectedText
-                      : styles.unselectedText
-                  }
-                >
-                  Outro
-                </Text>
-              </TouchableOpacity>
+                  <Text style={gender === g ? styles.selectedText : styles.unselectedText}>{g}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
 
             <Text style={styles.textoNome}>Número de Telefone:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu telefone"
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-            />
+            <TextInput style={styles.input} placeholder="Digite seu telefone" onChangeText={setPhone} keyboardType="phone-pad" />
 
             <Text style={styles.textoNome}>CPF ou CNPJ:</Text>
             <TextInput
@@ -287,23 +196,16 @@ export default function Register({ navigation }) {
               onChangeText={(text) => setCpfCnpj(formatarCpfCnpj(text))}
               keyboardType="number-pad"
             />
-            <Text style={styles.textoNome}>Senha: (Minimo 6 caracteres)</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite sua senha"
-              onChangeText={setPassword}
-              secureTextEntry
-              autoCorrect={false}
-            />
+
+            <Text style={styles.textoNome}>Senha: (Mínimo 6 caracteres)</Text>
+            <TextInput style={styles.input} placeholder="Digite sua senha" onChangeText={setPassword} secureTextEntry autoCorrect={false} />
 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.link}>
-                Já é cadastrado? Voltar para a tela de login
-              </Text>
+              <Text style={styles.link}>Já é cadastrado? Voltar para a tela de login</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.botao} onPress={enviarDados}>
-              <Text style={styles.botaoTexto}>CADASTRE-SE</Text>
+              <Text style={styles.botaoTexto}>{loading ? "Aguarde..." : "CADASTRE-SE"}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -327,6 +229,7 @@ const styles = StyleSheet.create({
   areaFormulario: {
     flexDirection: "column",
     margin: 10,
+        paddingBottom: 30,
   },
   textoNome: {
     fontSize: 18,

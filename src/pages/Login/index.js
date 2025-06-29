@@ -7,83 +7,101 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Alert
 } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login({ navigation }) {
-  const [name, setName] = useState("");
+  const { signIn } = useAuth();
+  const [emailOrNumber, setEmailOrNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-const isValidEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-};
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
-  const enviarDados = () => {
-    if (name === "" || password === "" || !isValidEmail) {
-      alert("Preencha todos os nomes corretamente!");
+  const enviarDados = async () => {
+    if (emailOrNumber === "" || password === "") {
+      alert("Preencha todos os campos!");
       return false;
     }
 
-    alert(
-      "Dados enviados com sucesso!! \n\n" +
-        "Nome : " +
-        name +
-        "\n" +
-        "Senha: " +
-        password +
-        "\n"
-    );
-    return true;
+    // Validação de email se for email
+    if (emailOrNumber.includes("@") && !isValidEmail(emailOrNumber)) {
+      alert("Email inválido!");
+      return false;
+    }
+
+    try {
+      setLoading(true);
+      const response = await signIn({ emailOrNumber, password });
+      if (response?.error) {
+        Alert.alert("Erro", response.error);
+        return false;
+      }
+      Alert.alert("Sucesso", "Login realizado com sucesso!");
+      return true;
+    } catch (error) {
+      Alert.alert("Erro inesperado", error.message);
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1, marginTop: -50 }}
-        >
-    <View style={styles.container}>
-      <Image
-        source={require("../../media/logo.png")}
-        style={{ width: 200, height: 160, marginBottom: 30 }}
-      />
-      <View style={styles.areaFormulario}>
-        <Text style={styles.textoNome}>E-mail ou CPF:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite o CPF ou Email"
-          underlineColorAndroid="transparent"
-          onChangeText={(texto) => setName(texto)}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1, marginTop: -50 }}
+    >
+      <View style={styles.container}>
+        <Image
+          source={require("../../media/logo.png")}
+          style={{ width: 200, height: 160, marginBottom: 30 }}
         />
+        <View style={styles.areaFormulario}>
+          <Text style={styles.textoNome}>E-mail ou CPF:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite o CPF ou Email"
+            underlineColorAndroid="transparent"
+            onChangeText={setEmailOrNumber}
+            value={emailOrNumber}
+          />
 
-        <Text style={styles.textoNome}>Senha:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite a sua senha"
-          underlineColorAndroid="transparent"
-          onChangeText={(texto) => setPassword(texto)}
-          secureTextEntry={true}
-          autoCorrect={false}
-        />
+          <Text style={styles.textoNome}>Senha:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite a sua senha"
+            underlineColorAndroid="transparent"
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry={true}
+            autoCorrect={false}
+          />
 
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.link}>Deseja se cadastrar? Clique aqui.</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <Text style={styles.link}>Deseja se cadastrar? Clique aqui.</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.botao}
-          onPress={() => {
-            if (enviarDados()) {
-              navigation.navigate("MainTabs", {user: name});
-            }
-          }}
-          underlayColor="#000000"
-        >
-          <Text style={styles.botaoTexto}>ACESSAR</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.botao}
+            onPress={async () => {
+              const success = await enviarDados();
+              if (success) {
+                navigation.navigate("MainTabs", { user: emailOrNumber });
+              }
+            }}
+          >
+            <Text style={styles.botaoTexto}>
+              {loading ? "Carregando..." : "ACESSAR"}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </KeyboardAvoidingView>
   );
 }
