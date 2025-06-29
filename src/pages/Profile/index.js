@@ -1,11 +1,23 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import Visitor from './Visitor';
 import UserProfile from './UserProfile';
 import Store from './Store';
+import { useAuth } from '../../contexts/AuthContext';
+
 export default function User() {
- return (
-   <View style={{flex: 1}}>
-    <Store/>
-   </View>
+  const { user } = useAuth();
+
+  return (
+    <View style={{ flex: 1 }}>
+      {user ? (
+        user.userType === 'store' ? (
+          <Store />
+        ) : (
+          <UserProfile />
+        )
+      ) : (
+        <Visitor />
+      )}
+    </View>
   );
 }

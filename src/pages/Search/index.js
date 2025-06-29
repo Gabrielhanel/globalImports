@@ -10,7 +10,6 @@ import {
 import { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import api from "../../services/Api";
-
 export default function SearchScreen() {
   const navigation = useNavigation();
   const [products, setProducts] = useState([]);

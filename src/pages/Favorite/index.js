@@ -12,8 +12,11 @@ import {
 import { FavoritesContext } from "../../contexts/favoriteContext";
 import api from "../../services/Api";
 import { CartContext } from "../../contexts/CartContext";
+import { useAuth } from "../../contexts/AuthContext";
+import OnlyLoggedUsers from '../Profile/OnlyLoggedUsers';
 
 export default function Favorite() {
+  const { user } = useAuth();
   const { cart, removeFromCart, addProduct } = useContext(CartContext);
   const { favorites } = useContext(FavoritesContext);
   const [products, setProducts] = useState([]);
@@ -70,7 +73,10 @@ export default function Favorite() {
       },
     ]);
   };
-
+  // Checa se o usuário é inválido para a tela de fav
+  if (!user || user.userType !== "user" || user.userType !== "admin") {
+    return <OnlyLoggedUsers />;
+  }
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <FlatList

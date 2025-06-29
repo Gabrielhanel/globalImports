@@ -5,19 +5,16 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  Dimensions,
   Alert,
 } from "react-native";
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
-//TODO: Adicionar funcionalidade: botão de finalizar compra e botão de remover do carrinho
-// TODO: Remover item do carrinho apos a compra
-// TODO: Filtro das imagens / marcas - base no comentario do index.js - pasta routes
-//  TODO: Questão das datas de nascimento -possibilidade de ter que fazer o prebuild
-// TODO: Funcionalidade do botão da lixeira
+import { useAuth } from "../../contexts/AuthContext";
+import OnlyLoggedUsers from "../Profile/OnlyLoggedUsers";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Cart() {
+  const { user } = useAuth();
   const navigation = useNavigation();
   const { cart, removeFromCart } = useContext(CartContext);
   const totalValue = cart
@@ -30,10 +27,15 @@ export default function Cart() {
       {
         text: "Remover",
         style: "destructive",
-        onPress: () => removeFromCart(id), // ✅ Só executa depois que o usuário clicar!
+        onPress: () => removeFromCart(id),
       },
     ]);
   };
+
+  // Checa se o usuário é inválido para o carrinho
+  if (!user || user.userType !== "user" || user.userType !== "admin") {
+    return <OnlyLoggedUsers />;
+  }
 
   return (
     <View style={styles.wrapper}>
@@ -47,7 +49,9 @@ export default function Cart() {
             <View style={{ marginVertical: 20, alignItems: "center" }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={styles.totalText}>Total: </Text>
-                <Text style={styles.totalValue}>R$ {totalValue.toLocaleString('pt-BR')}</Text>
+                <Text style={styles.totalValue}>
+                  R$ {parseFloat(totalValue).toLocaleString("pt-BR")}
+                </Text>
               </View>
               <TouchableOpacity
                 style={styles.btn}
@@ -72,15 +76,12 @@ export default function Cart() {
           <View style={styles.item}>
             <View style={{ flexDirection: "row" }}>
               <View style={{ justifyContent: "space-between" }}>
-                <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
-                >
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
                   <Image
                     source={{ uri: item.thumbnail }}
                     style={{ width: 100, height: 100 }}
                   />
                 </View>
-
                 <View style={{ flexDirection: "row" }}>
                   <View style={{ flexDirection: "column" }}>
                     <View
@@ -94,12 +95,13 @@ export default function Cart() {
                       <Text style={styles.brand}>{item.brand}</Text>
                     </View>
                     <View>
-                      <Text style={styles.price}>US$ {item.price.toLocaleString("pt-BR")}</Text>
+                      <Text style={styles.price}>
+                        US$ {item.price.toLocaleString("pt-BR")}
+                      </Text>
                     </View>
                   </View>
                 </View>
               </View>
-
               <View>
                 <TouchableOpacity onPress={() => handleRemoveItem(item.id)}>
                   <Image
@@ -108,7 +110,6 @@ export default function Cart() {
                   />
                 </TouchableOpacity>
               </View>
-
             </View>
           </View>
         )}
@@ -116,7 +117,6 @@ export default function Cart() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
