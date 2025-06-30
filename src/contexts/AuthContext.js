@@ -9,6 +9,7 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
 
   useEffect(() => {
     async function loadCredentials() {
@@ -40,7 +41,10 @@ export default function AuthProvider({ children }) {
       );
     }
   }
-
+  if (pendingAction) {
+    pendingAction();  // Executa o que estava pendente
+    setPendingAction(null);
+  }
   async function signUp(credentials) {
     const response = await register(credentials);
 
@@ -64,7 +68,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, signIn, signUp, logout }}>
+    <AuthContext.Provider value={{ user, token, signIn, signUp, logout, setPendingAction }}>
       {children}
     </AuthContext.Provider>
   );

@@ -11,6 +11,7 @@ export default function ProductFiltered({ route }) {
       <Text style={styles.title}>Produtos Filtrados</Text>
 
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={filteredProducts}
         keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
 renderItem={({ item }) => (

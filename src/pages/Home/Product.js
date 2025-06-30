@@ -12,54 +12,128 @@ import GoBack from "../../components/goBack";
 import ButtonLike from "../../components/ButtonLike";
 import { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
-import Modal from 'react-native-modal';
+import Modal from "react-native-modal";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 export default function Home({ route }) {
   const { addProduct } = useContext(CartContext);
   const [isModalVisible, setModalVisible] = useState(false);
-  const { user } = useAuth();
+  const { user, setPendingAction } = useAuth();
   const navigation = useNavigation();
 
-  function handleAddProduct(product) {
-if (!user || (user.userType !== "user" && user.userType !== "admin")) {
-  navigation.navigate("OnlyLoggedAction");
-} 
-else {
-addProduct(product);
-setModalVisible(true);}
+function handleAddProduct(product) {
+  if (!user || (user.userType !== "user" && user.userType !== "admin")) {
+    setPendingAction(() => () => {
+      addProduct(product);
+      setModalVisible(true);
+    });
+    navigation.navigate("Login");
+  } else {
+    addProduct(product);
+    setModalVisible(true);
   }
+}
 
   const { product, images, imageBrand } = route.params;
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", paddingHorizontal: 20}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            paddingHorizontal: 20,
+          }}
+        >
           <TouchableOpacity>
             <GoBack />
           </TouchableOpacity>
-          <View style={{flexDirection: "row", alignSelf: "center",}}>
-          <TouchableOpacity style={styles.cart} onPress={() => handleAddProduct(product)} >
-            <Image
-              source={require("../../media/home/shopping_cart-white.png")}
-              style={{ width: 30, height: 30, marginLeft: 10}}
-            />
-          </TouchableOpacity>
-          <Modal isVisible={isModalVisible}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <View style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', backgroundColor: 'white', width: 200, height: 200, borderRadius: 20 }}>
-                <Text style={{ fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center' }}>Adicionado com sucesso!</Text>
+          <View style={{ flexDirection: "row", alignSelf: "center" }}>
 
-                <TouchableOpacity onPress={() => setModalVisible(false)} style={{ marginTop: 50, backgroundColor: "#26919B", width: 100, height: 40, borderRadius: 10 }}>
-                  <View style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center', marginTop: 10 }}>
-                    <Text style={{ fontFamily: 'K2D_700Bold', fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Fechar</Text>
-                  </View>
-                </TouchableOpacity>
-                <View />
+            {/*user.userType === "store" || user.userType === "admin" ? (
+              <Text>DEU CERTO</Text>
+            ) : null*/}
+
+            <TouchableOpacity onPress={() => navigation.navigate("ProductEdit", { product: product })}>
+              <Image
+              source={require("../../media/home/edit.png")}
+              style={{ width: 50, height: 50, marginTop: 52, marginRight: 10 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cart}
+              onPress={() => handleAddProduct(product)}
+            >
+              <Image
+                source={require("../../media/home/shopping_cart-white.png")}
+                style={{ width: 30, height: 30, marginLeft: 10 }}
+              />
+            </TouchableOpacity>
+            <Modal isVisible={isModalVisible}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    backgroundColor: "white",
+                    width: 200,
+                    height: 200,
+                    borderRadius: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "K2D_700Bold",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    Adicionado com sucesso!
+                  </Text>
+
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(false)}
+                    style={{
+                      marginTop: 50,
+                      backgroundColor: "#26919B",
+                      width: 100,
+                      height: 40,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "K2D_700Bold",
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          color: "white",
+                        }}
+                      >
+                        Fechar
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View />
+                </View>
               </View>
-            </View>
-          </Modal>
-          <ButtonLike product={product} />
+            </Modal>
+            <ButtonLike product={product} />
           </View>
         </View>
         <FlatList
@@ -82,7 +156,7 @@ setModalVisible(true);}
           <Text style={styles.brand}>{product.brand?.toUpperCase()}</Text>
           <Text style={styles.title}>{product.title}</Text>
           <TouchableOpacity>
-          <Image source={imageBrand} style={styles.imageBrand} />
+            <Image source={imageBrand} style={styles.imageBrand} />
           </TouchableOpacity>
         </View>
         <View style={{ justifyContent: "flex-start", alignItems: "center" }}>
@@ -90,7 +164,9 @@ setModalVisible(true);}
         </View>
         <View>
           <Text style={styles.price}>R${[product.price].toLocaleString()}</Text>
-          <Text style={styles.priceWorld}>US${[product.price].toLocaleString()}</Text>
+          <Text style={styles.priceWorld}>
+            US${[product.price].toLocaleString()}
+          </Text>
         </View>
         <View
           style={{
@@ -177,7 +253,9 @@ setModalVisible(true);}
             <Text style={styles.specValue}>{product.shift}</Text>
 
             <Text style={styles.specTitle}>0–100km/h</Text>
-            <Text style={styles.specValue}>{product.acceleration_to_hundred}s</Text>
+            <Text style={styles.specValue}>
+              {product.acceleration_to_hundred}s
+            </Text>
           </View>
         </View>
       </View>
@@ -199,7 +277,7 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     marginTop: 55,
-    marginRight: 15
+    marginRight: 15,
   },
   brand: {
     fontSize: 24,

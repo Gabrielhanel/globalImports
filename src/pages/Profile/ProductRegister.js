@@ -17,9 +17,9 @@ export default function ProductRegister() {
   const [brand, setBrand] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   const [model, setModel] = useState("");
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(0);
   const [motorization, setMotorization] = useState("");
   const [horsePower, setHorsePower] = useState("");
   const [torque, setTorque] = useState("");
@@ -31,11 +31,11 @@ export default function ProductRegister() {
   const [accelerationToHundred, setAccelerationToHundred] = useState("");
 
 const handleSave = () => {
-  const product = {
+  const newProduct = {
     brand,
     title,
     description,
-    price: price.trim(),
+    price: price.trim(), // valida string primeiro
     model,
     year,
     motorization,
@@ -49,23 +49,61 @@ const handleSave = () => {
     accelerationToHundred,
   };
 
-  const hasInvalidFields = Object.values(product).some(
-    (value) => value === "" || value === null || value === undefined || value.trim?.() === ""
-  );
-
-  const isPriceValid = !Number.isNaN(parseFloat(price)) && parseFloat(price) > 0;
-
-  if (hasInvalidFields || !isPriceValid) {
-    Alert.alert("Error", "Please fill all fields correctly!");
+  if (
+    !brand ||
+    !title ||
+    !description ||
+    !price ||
+    !model ||
+    !year ||
+    !motorization ||
+    !horsePower ||
+    !torque ||
+    !traction ||
+    !propulsion ||
+    !doors ||
+    !carConfiguration ||
+    !shift ||
+    !accelerationToHundred ||
+    price < 0
+  ) {
+    Alert.alert("Erro", "Preencha todos os campos corretamente!");
     return;
   }
 
-  const finalProduct = {
-    ...product,
+  if (doors !== "2" && doors !== "4") {
+    Alert.alert("Erro", "Quantidade de portas inválida!");
+    return;
+  }
+
+  if (shift !== "Automatico" && shift !== "Manual") {
+    Alert.alert("Erro", "Tipo de transmissão inválido!");
+    return;
+  }
+
+  if (accelerationToHundred < 0) {
+    Alert.alert("Erro", "Aceleração para 100 km/h inválida!");
+    return;
+  }
+
+  if(year < 1900 || year > new Date().getFullYear()) {
+    Alert.alert("Erro", "Ano inválido!");
+    return;
+  }
+
+  if (horsePower < 0 || torque < 0 || horsePower > 1000 || torque > 1000) {
+    Alert.alert("Erro", "Potência e torque inválidos!");
+    return;
+  }
+
+  
+  const produtoFinal = {
+    ...newProduct,
     price: parseFloat(price),
   };
 
-  Alert.alert("Success", "Product saved successfully!");
+  console.log("Produto criado:", produtoFinal);
+  Alert.alert("Sucesso", newProduct);
 };
 
   return (

@@ -8,7 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  Alert
+  Alert,
 } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -22,7 +22,7 @@ export default function Login({ navigation }) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
-  
+
   const enviarDados = async () => {
     if (emailOrNumber === "" || password === "") {
       alert("Preencha todos os campos!");
@@ -54,7 +54,7 @@ export default function Login({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1, marginTop: -50 }}
     >
       <View style={styles.container}>
@@ -92,7 +92,7 @@ export default function Login({ navigation }) {
             onPress={async () => {
               const success = await enviarDados();
               if (success) {
-                navigation.navigate("MainTabs", { user: emailOrNumber });
+                navigation.goBack(); // Volta e deixa o pendingAction ser executado
               }
             }}
           >

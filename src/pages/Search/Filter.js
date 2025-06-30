@@ -109,6 +109,7 @@ const applyFilter = () => {
   setDisplayedProducts(filtered);
   return filtered;
 };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <GoBack />

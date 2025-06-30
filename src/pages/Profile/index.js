@@ -9,7 +9,7 @@ export default function User() {
 
   return (
     <View style={{ flex: 1 }}>
-      {/*user ? (
+      {user ? (
         user.userType === 'store' || user.userType === 'admin' ? (
           <Store />
         ) : (
@@ -17,8 +17,7 @@ export default function User() {
         )
       ) : (
         <Visitor />
-      )*/}
-      <Store />
+      )}
     </View>
   );
 }
