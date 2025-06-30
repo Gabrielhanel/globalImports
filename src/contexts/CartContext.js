@@ -1,11 +1,16 @@
 import { createContext, useState } from "react";
 import api from "../services/Api";
 export const CartContext = createContext();
+import { useAuth } from "./AuthContext";
 
 function CartProvider({ children }) {
+  const { user } = useAuth();
   const [cart, setCart] = useState([]);
-
 async function addProduct(newItem) {
+  if (!user) {
+    throw new Error("User not logged in");
+  }
+
   try {
     const response = await fetch("http://localhost:3000/orders/cart", {
       method: "POST",
@@ -16,7 +21,6 @@ async function addProduct(newItem) {
       }),
     });
     const data = await response.json();
-    // Atualiza o contexto se quiser refletir localmente
     setCart(data.cart);
   } catch (error) {
     console.error("Erro ao adicionar produto ao carrinho", error);

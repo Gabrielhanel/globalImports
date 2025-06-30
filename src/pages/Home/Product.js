@@ -21,19 +21,20 @@ export default function Home({ route }) {
   const { user, setPendingAction } = useAuth();
   const navigation = useNavigation();
 
-function handleAddProduct(product) {
-  if (!user || (user.userType !== "user" && user.userType !== "admin")) {
-    setPendingAction(() => () => {
-      addProduct(product);
-      setModalVisible(true);
-    });
-    navigation.navigate("Login");
-  } else {
-    addProduct(product);
+async function handleAddProduct(product) {
+  try {
+    if (!user || !user.userType || (user.userType !== "user" && user.userType !== "admin")) {
+      setPendingAction(() => () => addProduct(product));
+      navigation.navigate("OnlyLoggedAction");
+      return;
+    }
+    await addProduct(product);
     setModalVisible(true);
+  } catch (error) {
+    console.error("Erro ao adicionar produto:", error);
+    // Se quiser, pode também redirecionar para login aqui, por segurança
   }
 }
-
   const { product, images, imageBrand } = route.params;
   return (
     <ScrollView>

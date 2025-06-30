@@ -41,10 +41,13 @@ export default function AuthProvider({ children }) {
       );
     }
   }
+
+useEffect(() => {
   if (pendingAction) {
-    pendingAction();  // Executa o que estava pendente
+    pendingAction(); // executa ação pendente
     setPendingAction(null);
   }
+}, [pendingAction]);
   async function signUp(credentials) {
     const response = await register(credentials);
 

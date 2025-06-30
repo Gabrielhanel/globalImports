@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import GoBack from '../../components/goBack';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ProductFiltered({ route }) {
+  const navigation = useNavigation();
   const { filteredProducts } = route.params;
 
   return (
@@ -15,6 +17,7 @@ export default function ProductFiltered({ route }) {
         data={filteredProducts}
         keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
 renderItem={({ item }) => (
+  <TouchableOpacity onPress={() => navigation.navigate('Product', { product: item })}>
   <View style={styles.card}>
     {item.images && item.images.length > 0 ? (
       <Image source={{ uri: item.images[0].image }} style={styles.image} />
@@ -26,7 +29,7 @@ renderItem={({ item }) => (
     <View style={styles.info}>
       <Text style={styles.model}>{item.model}</Text>
       <Text style={styles.price}>
-        {item.currency === 'USD' ? '$' : item.currency} {item.price.toFixed(2)}
+        US$ {item.price.toLocaleString("pt-BR")}
       </Text>
       <Text style={styles.details}>
         {item.year} • {item.car_type} • {item.propulsion === 'INTERNAL_COMBUSTION' ? 'Combustão' : 'Elétrico'}
@@ -36,6 +39,7 @@ renderItem={({ item }) => (
       </Text>
     </View>
   </View>
+  </TouchableOpacity>
 )}
         ListEmptyComponent={
           <Text style={styles.emptyText}>Nenhum produto encontrado.</Text>

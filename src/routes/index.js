@@ -52,7 +52,7 @@ function TabRoutes() {
             backgroundColor: "#fff",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            height: 90,
+            height: 100,
             paddingTop: 10,
           },
         }}
