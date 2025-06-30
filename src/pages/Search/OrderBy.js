@@ -10,23 +10,6 @@ export default function OrderBy() {
   const [orderOption, setOrderOption] = useState("Recomendados");
       const { products } = useContext(CardProductContext);
 
-{ /*      const FilteredData = products
-      .filter(filter(item =>
-    item.title.toLowerCase()))
-    .sort((a, b) => {
-    switch (orderOption) {
-      case 'name-asc':
-        return a.title.localeCompare(b.title);
-      case 'name-desc':
-        return b.title.localeCompare(a.title);
-      case 'price-asc':
-        return a.price - b.price;
-      case 'price-desc':
-        return b.price - a.price;
-      default:
-        return 0;
-    }})
-*/}
 
   return (
     <View>

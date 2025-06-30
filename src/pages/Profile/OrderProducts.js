@@ -1,20 +1,38 @@
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import GoBack from '../../components/goBack';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
+import api from '../../services/Api';
+import { OrderContext } from "../../contexts/orderContext";
+export default function OrderProducts( ) {
 
-export default function OrderProducts( { route }) {
+  const { order, setOrder } = useContext(OrderContext);
+  const { user } = useContext(AuthContext);
+const fetchOrder = async () => {
+  try {
+    const response = await api.get(`/orders/${user.id}`)
+      setOrder(response.data.order);
+  } catch (err) {
+    console.error("Erro ao buscar carrinho", err);
+  }
+};
 
-    const { products } = route.params
+  useEffect(() => {
+    fetchOrder();
+  }, []);
 
     return (
         <View style={styles.container}>
                     < FlatList
         showsVerticalScrollIndicator={false}
+ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhum produto no pedido</Text>}
         ListHeaderComponent={<View>
             <GoBack/>
             <Text style={styles.title}>Detalhes do Pedido: </Text>
             </View>}
-        data={products}
+        data={order}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
                       <View style={styles.card}>
@@ -63,7 +81,7 @@ export default function OrderProducts( { route }) {
                           >
                             {item.year || "2020"}
                           </Text>
-                          <Image source={item.image} style={styles.img} />
+                          <Image source={{ uri: item.image }} style={styles.img} />
                         </View>
                       </View>
         )}

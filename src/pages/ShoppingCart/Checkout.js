@@ -5,7 +5,7 @@ import { CartContext } from "../../contexts/CartContext";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { OrderContext } from "../../contexts/orderContext";
-
+import api from "../../services/Api";
 export default function Checkout({ route }) {
     const navigation = useNavigation();
   const { cart, clearCart } = useContext(CartContext);
