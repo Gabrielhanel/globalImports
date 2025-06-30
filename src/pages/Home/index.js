@@ -66,7 +66,7 @@ function filterBrands(productsList) {
     <View style={styles.container}>
       <FlatList
         data={imageBrands}
-        keyExtractor={(item) => `${item.model}-${item.year}`}
+        keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>

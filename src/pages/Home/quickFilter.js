@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  Text,
 } from "react-native";
 
 export default function QuickFilter() {
@@ -18,8 +17,9 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/mustang-logo.png")}
+              source={{ uri: "https://res.cloudinary.com/dsfqzbq9f/image/upload/v1751253317/mustang-logo_fturkz.png" }}
               style={styles.image}
+              resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
@@ -27,8 +27,9 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/Koenigsegg-logo.png")}
+              source={{ uri: "https://res.cloudinary.com/dsfqzbq9f/image/upload/v1751253317/tesla-logo_fsgsir.png" }}
               style={styles.image}
+              resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
@@ -36,8 +37,9 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/tesla-logo.png")}
+              source={{ uri: "https://res.cloudinary.com/dsfqzbq9f/image/upload/v1751253317/logo-ferrari_f4sgbh.png" }}
               style={styles.image}
+              resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
@@ -45,8 +47,9 @@ export default function QuickFilter() {
         <View>
           <TouchableOpacity style={styles.areaImage}>
             <Image
-              source={require("../../media/home/logo-ferrari.png")}
-              style={[styles.image, {maxWidth: 100, maxHeight: 100}]}
+              source={{ uri: "https://res.cloudinary.com/dsfqzbq9f/image/upload/v1751253317/Koenigsegg-logo_ljilzo.png" }}
+              style={styles.image}
+              resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
@@ -54,6 +57,7 @@ export default function QuickFilter() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -62,10 +66,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   image: {
-    maxWidth: 60,
-    maxHeight: 50,
-    padding: 5,
-    overflow: "hidden",
+    width: 60, // largura fixa
+    height: 40, // altura fixa
     margin: 5,
   },
   areaImage: {

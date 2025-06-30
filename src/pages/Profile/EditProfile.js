@@ -12,7 +12,7 @@ import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import GoBack from "../../components/goBack";
 import Modal from "react-native-modal";
-
+import { uploadImage } from "../../services/ImageService";
 export default function EditProfile() {
   const [users] = useState({
     email: "sla@email.com",
@@ -47,23 +47,48 @@ export default function EditProfile() {
   };
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permissão negada",
+        "É necessário permitir o acesso à galeria."
+      );
+      return;
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.7,
+      base64: true,
     });
-
-    if (!result.cancelled) {
-      setImagem(result.assets[0].uri);
+if (!result.canceled) {
+  try {
+    const { imageUrl, error } = await uploadImage(result.assets[0].base64);
+    if (error) {
+      Alert.alert("Erro!", "Não foi possível fazer o upload da imagem.");
+    } else {
+      setImagem({ uri: imageUrl }); 
+      Alert.alert("Sucesso!", "Imagem atualizada com sucesso.");
     }
+  } catch (err) {
+    console.error(err);
+    Alert.alert("Erro!", "Ocorreu um erro ao fazer o upload.");
+  }
+}
   };
   const save = () => {
     if (email === "" || phone === "") {
       Alert.alert("Preencha todos os campos corretamente!");
     } else {
       setModalVisible(!isModalVisible);
+      const productData = {
+      email,
+      phone,
+      imageUrl: imagem?.uri,
+    };
+    console.log(productData);
     }
   };
 
@@ -77,16 +102,7 @@ export default function EditProfile() {
       <Text style={styles.label}>Alterar foto de perfil:</Text>
       <View style={styles.containerImage}>
         <View style={styles.backgroundImage}>
-          <Image
-            source={
-              imagem
-                ? { uri: imagem }
-                : require("../../media/profile/visitor.png")
-            }
-            style={styles.image}
-            resizeMode="cover"
-            backgroundColor="white"
-          />
+          {imagem && <Image source={{ uri: imagem.uri }} style={styles.image} />}
         </View>
         <TouchableOpacity style={styles.buttonImage} onPress={pickImage}>
           <Text style={styles.textButtonImage}>Fazer upload de foto</Text>

@@ -1,46 +1,43 @@
 import { createContext, useState } from "react";
-
+import api from "../services/Api";
 export const CartContext = createContext();
 
 function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  function addProduct(newItem) {
-    // Verificar se o item já existe no carrinho
-    const indexItem = cart.findIndex((item) => item.id === newItem.id);
-
-    if (indexItem !== -1) {
-      // se entrou aqui quer dizer que temos que adicionar +1 quantidade pois ele ja esta na sua lista
-      let cartList = cart;
-      cartList[indexItem].amount = cartList[indexItem].amount + 1;
-      cartList[indexItem].total =
-        cartList[indexItem].amount * cartList[indexItem].price;
-      setCart(cartList);
-      return;
-    }
-
-    //TODO: Ajustar a questão do amount
-    let data = {
-      ...newItem,
-      amount: 1,
-      total: newItem.price,
-    };
-
-    setCart((products) => [...products, data]);
+async function addProduct(newItem) {
+  try {
+    const response = await fetch("http://localhost:3000/orders/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: user.id,
+        ...newItem
+      }),
+    });
+    const data = await response.json();
+    // Atualiza o contexto se quiser refletir localmente
+    setCart(data.cart);
+  } catch (error) {
+    console.error("Erro ao adicionar produto ao carrinho", error);
   }
+}
 
-  function removeFromCart(productId) {
-    setCart((prevItems) =>
-      prevItems.filter((item) => item.id !== productId)
-    );
+async function removeFromCart(productId) {
+  try {
+    await api.delete(`/orders/cart/${user.id}/${productId}`);
+    setCart((prev) => prev.filter((item) => item.id !== productId));
+  } catch (err) {
+    console.error("Erro ao remover item", err);
   }
+}
 
     function clearCart() {
     setCart([]);
   }
 
   return (
-    <CartContext.Provider value={{ cart, addProduct, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, setCart,addProduct, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

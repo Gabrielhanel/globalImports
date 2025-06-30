@@ -8,23 +8,26 @@ import { OrderContext } from "../../contexts/orderContext";
 
 export default function Checkout({ route }) {
     const navigation = useNavigation();
-    const {addOrder} = useContext(OrderContext);
   const { cart, clearCart } = useContext(CartContext);
   const { totalValue } = route.params;
 const [methodPayment, setMethodPayment] = useState("Transferência Bancária");
 
-function handleAddOrder(cart) {
-  const newOrder = {
-    id: Date.now(),                      // ✅ Só cria o id aqui!
-    items: cart,
-    methodPayment: methodPayment,
-    totalValue: totalValue
-  };
-
-
-  addOrder(newOrder);
-
-  navigation.navigate("PurchaseConfirmated");
+async function handleAddOrder() {
+  try {
+    await api.post("/orders", {
+      userId: user.id,
+      items: cart.map(item => ({
+        productId: item.id,
+        quantity: item.amount
+      })),
+      methodPayment,
+      totalValue
+    });
+    clearCart();
+    navigation.navigate("PurchaseConfirmated");
+  } catch (err) {
+    console.error("Erro ao finalizar compra", err);
+  }
 }
   return (
     <View style={styles.container}>

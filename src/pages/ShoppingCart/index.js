@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import api from "../../services/Api";
 import { CartContext } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import OnlyLoggedUsers from "../Profile/OnlyLoggedUsers";
@@ -17,21 +18,34 @@ export default function Cart() {
   
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, setCart, removeFromCart, clearCart,  } = useContext(CartContext);
   const totalValue = cart
     .reduce((total, item) => total + item.price, 0)
     .toFixed(2);
 
-  const handleRemoveItem = (id) => {
-    Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Remover",
-        style: "destructive",
-        onPress: () => removeFromCart(id),
-      },
-    ]);
-  };
+useEffect(() => {
+  if (user) {
+    fetchCart();
+  }
+}, [user]);
+
+const fetchCart = () => {
+  try {
+    api.get(`/orders/cart/${user.id}`)
+      .then(response => setCart(response.data.cart))
+      .catch(err => console.error("Erro ao buscar carrinho", err));
+  } catch (err) {
+    console.error("Erro ao buscar carrinho", err);
+  }
+};
+
+const handleRemoveItem = (id) => {
+  Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
+    { text: "Cancelar", style: "cancel" },
+    { text: "Remover", style: "destructive", onPress: () => removeItem(id) },
+  ]);
+};
+
 
   // Checa se o usuário é inválido para o carrinho
   if (!user || user.userType !== "user" || user.userType !== "admin") {

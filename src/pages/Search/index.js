@@ -24,7 +24,7 @@ export default function SearchScreen() {
           const data = response.data;
 
           const enrichedCars = data.cars.map((car) => {
-            const brand = data.brands.find((b) => b.id === car.brand); //esperar o pabo colocar a api com o get que contenha o id da table brand
+            const brand = data.brands.find((b) => b.id === car.brand);
             const store = data.stores.find((s) => s.id === car.store);
             const images = data.car_images.filter((img) => img.car === car.id);
             return {

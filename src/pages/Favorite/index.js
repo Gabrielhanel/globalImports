@@ -52,16 +52,12 @@ export default function Favorite() {
     }, [])
   );
 
-  const handleRemoveItem = (id) => {
-    Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Remover",
-        style: "destructive",
-        onPress: () => removeFromCart(id), // ✅ Só executa depois que o usuário clicar!
-      },
-    ]);
-  };
+const handleRemoveItem = (id) => {
+  Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
+    { text: "Cancelar", style: "cancel" },
+    { text: "Remover", style: "destructive", onPress: () => removeItem(id) },
+  ]);
+};
 
   const handleRemoveFavorite = (id) => {
     Alert.alert("Remover", "Tem certeza que deseja remover este item?", [
