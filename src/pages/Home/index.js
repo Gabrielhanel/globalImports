@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
@@ -14,6 +14,7 @@ import api from "../../services/Api";
 
 export default function HomeScreen() {
   const [products, setProducts] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState(null);
   const [imageBrands, setImageBrands] = useState([]);
   const navigation = useNavigation();
 
@@ -47,6 +48,17 @@ useFocusEffect(
     fetchData();
   }, [])
 );
+ // Filtra produtos conforme marca selecionada
+  const filteredProducts = useMemo(() => {
+    if (!selectedBrand) return products;
+    return products.filter(product => product.brand?.name === selectedBrand);
+  }, [products, selectedBrand]);
+
+  // Passa as marcas para o filtro (extrair as marcas únicas)
+  const availableBrands = useMemo(() => {
+    const brandsSet = new Set(products.map(p => p.brand?.name).filter(Boolean));
+    return Array.from(brandsSet);
+  }, [products]);
 
 function filterBrands(productsList) {
     const brands = {
@@ -65,7 +77,7 @@ function filterBrands(productsList) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={imageBrands}
+        data={filteredProducts}
         keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
@@ -79,7 +91,11 @@ function filterBrands(productsList) {
                 alignSelf: "center",
               }}
             />
-            <QuickFilter />
+            <QuickFilter
+                  brands={availableBrands}
+      selectedBrand={selectedBrand}
+      onSelectBrand={setSelectedBrand}
+            />
           </View>
         }
         renderItem={({ item }) => (
