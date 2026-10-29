@@ -65,7 +65,7 @@ Há telas de formulário para inserir e editar dados técnicos e imagens dos ve�
 Clone o repositório e entre na pasta do projeto:
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/Gabrielhanel/globalImports
 cd globalImports-main
 ```
 
